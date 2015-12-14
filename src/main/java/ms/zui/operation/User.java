@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;;
 
 
@@ -45,6 +46,7 @@ public class User {
 		this.role = value;
 	}
 	
+	@JsonIgnore
 	public boolean isAdmin() {
 		return role.compareTo("admin") == 0 ? true : false;
 	}
