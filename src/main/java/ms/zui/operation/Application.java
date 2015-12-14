@@ -82,6 +82,8 @@ public class Application {
 			http.httpBasic();
 			http
 				.authorizeRequests()
+					.regexMatchers(HttpMethod.OPTIONS, "/users").permitAll()
+					.regexMatchers(HttpMethod.OPTIONS, "/users/logout").permitAll()
 					.antMatchers("/token").permitAll()
 					.anyRequest().authenticated()
 			.and()

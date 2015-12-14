@@ -40,7 +40,7 @@ public class UsersController {
 		return new ResponseEntity<Map<String, String>>(Collections.singletonMap("token", ""), HttpStatus.NOT_FOUND);
 	}
 	
-    @RequestMapping(value="/logout", method=RequestMethod.GET)
+    @RequestMapping(value="/users/logout", method=RequestMethod.PUT)
     public ResponseEntity<User> logout(HttpSession session) {
     	User user = (User) session.getAttribute("user");
     	session.invalidate();
