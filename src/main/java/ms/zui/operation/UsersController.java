@@ -50,7 +50,7 @@ public class UsersController {
 
     @RequestMapping(value="/token", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, String>> token(HttpSession session) {
-		return new ResponseEntity<Map<String, String>>(Collections.singletonMap("token", session.getId()), HttpStatus.NOT_FOUND);
+		return new ResponseEntity<Map<String, String>>(Collections.singletonMap("token", session.getId()), HttpStatus.OK);
 	}
 	
     @RequestMapping(value="/users", method=RequestMethod.GET)
