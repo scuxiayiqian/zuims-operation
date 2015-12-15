@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class Application {
 
 	public static HashMap<String, User> repoUser;
+	public static HashMap<String, Restaurant> repoRestaurant;
 
 	public static ObjectMapper mapper = null;
 
@@ -35,17 +36,23 @@ public class Application {
 		mapper = new ObjectMapper();
 
 		User[] users = null;
-
+		Restaurant[] restaurants = null;
+		
 		try {
 			users = mapper.readValue(new File("user.json"), User[].class);
+			restaurants = mapper.readValue(new File("restaurant.json"), Restaurant[].class);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 
 		repoUser = new HashMap<String, User>();
-
+		repoRestaurant = new HashMap<String, Restaurant>();
+		
 		for (int nIndex = 0; nIndex < users.length; nIndex++) {
 			repoUser.put(users[nIndex].getName(), users[nIndex]);
+		}
+		for (int nIndex = 0; nIndex < restaurants.length; nIndex++) {
+			repoRestaurant.put(restaurants[nIndex].getName(), restaurants[nIndex]);
 		}
 	}
 
