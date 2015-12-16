@@ -45,7 +45,7 @@ public class RestaurantsController {
     	Restaurant obj = Application.repoRestaurant.put(restaurant.getName(), restaurant);
     	
     	try {
-        	Application.mapper.writeValue(new File("restaurant.json"), Application.repoRestaurant.values());    		
+        	Application.mapper.writeValue(new File(Application.dataPath + "restaurant.json"), Application.repoRestaurant.values());    		
     	}
     	catch (Exception e) {
     		System.out.println(e.getMessage());
@@ -62,7 +62,7 @@ public class RestaurantsController {
     	Restaurant obj = Application.repoRestaurant.put(restaurant.getName(), restaurant);
     	
     	try {
-        	Application.mapper.writeValue(new File("restaurant.json"), Application.repoRestaurant.values());    		
+        	Application.mapper.writeValue(new File(Application.dataPath + "restaurant.json"), Application.repoRestaurant.values());    		
     	}
     	catch (Exception e) {
     		System.out.println(e.getMessage());
@@ -80,7 +80,7 @@ public class RestaurantsController {
     	Restaurant obj = Application.repoRestaurant.remove(name);
     	
     	try {
-        	Application.mapper.writeValue(new File("restaurant.json"), Application.repoRestaurant.values());    		
+        	Application.mapper.writeValue(new File(Application.dataPath + "restaurant.json"), Application.repoRestaurant.values());    		
     	}
     	catch (Exception e) {
     		System.out.println(e.getMessage());

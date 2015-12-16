@@ -25,11 +25,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @EnableRedisHttpSession
 public class Application {
 
-	public static HashMap<String, User> repoUser;
-	public static HashMap<String, Restaurant> repoRestaurant;
+	public static HashMap<String, User> 		repoUser;
+	public static HashMap<String, Restaurant> 	repoRestaurant;	
+	public static HashMap<String, Guest> 		repoGuest;
 
 	public static ObjectMapper mapper = null;
 
+	public static String dataPath = "data/";
 	
 	public Application() {
 
@@ -37,29 +39,39 @@ public class Application {
 
 		User[] users = null;
 		Restaurant[] restaurants = null;
+		Guest[] guests = null;
 		
 		try {
-			users = mapper.readValue(new File("user.json"), User[].class);
-			restaurants = mapper.readValue(new File("restaurant.json"), Restaurant[].class);
+			users = mapper.readValue(new File(dataPath + "user.json"), User[].class);
+			restaurants = mapper.readValue(new File(dataPath + "restaurant.json"), Restaurant[].class);
+			guests = mapper.readValue(new File(dataPath + "guest.json"), Guest[].class);
+			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 
 		repoUser = new HashMap<String, User>();
 		repoRestaurant = new HashMap<String, Restaurant>();
+		repoGuest = new HashMap<String, Guest>();
 		
 		for (int nIndex = 0; nIndex < users.length; nIndex++) {
 			repoUser.put(users[nIndex].getName(), users[nIndex]);
 		}
+		
 		for (int nIndex = 0; nIndex < restaurants.length; nIndex++) {
 			repoRestaurant.put(restaurants[nIndex].getName(), restaurants[nIndex]);
 		}
+		
+		for (int nIndex = 0; nIndex < guests.length; nIndex++) {
+			repoGuest.put(guests[nIndex].getName(), guests[nIndex]);
+		}
+
 	}
 
 	@Bean
 	HeaderHttpSessionStrategy sessionStrategy() {
-		System.out.println("HeaderHttpSessionStrategy on");
-	    return new HeaderHttpSessionStrategy();
+
+		return new HeaderHttpSessionStrategy();
 	}
 	
 	@Configuration

@@ -79,7 +79,7 @@ public class UsersController {
     	User obj = Application.repoUser.put(user.getName(), user);
     	
     	try {
-        	Application.mapper.writeValue(new File("user.json"), Application.repoUser.values());    		
+        	Application.mapper.writeValue(new File(Application.dataPath + "user.json"), Application.repoUser.values());    		
     	}
     	catch (Exception e) {
     		System.out.println(e.getMessage());
@@ -95,7 +95,7 @@ public class UsersController {
     	User obj = Application.repoUser.put(user.getName(), user);
     	
     	try {
-        	Application.mapper.writeValue(new File("user.json"), Application.repoUser.values());    		
+        	Application.mapper.writeValue(new File(Application.dataPath + "user.json"), Application.repoUser.values());    		
     	}
     	catch (Exception e) {
     		System.out.println(e.getMessage());
@@ -110,7 +110,7 @@ public class UsersController {
     	Application.repoUser.remove(name);
     	
     	try {
-        	Application.mapper.writeValue(new File("user.json"), Application.repoUser.values());    		
+        	Application.mapper.writeValue(new File(Application.dataPath + "user.json"), Application.repoUser.values());    		
     	}
     	catch (Exception e) {
     		System.out.println(e.getMessage());
