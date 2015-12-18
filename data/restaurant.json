@@ -1,1 +1,1 @@
-[{"name":"Sheraton","isPromoted":false},{"name":"Hilton","isPromoted":true},{"name":"Hyatt","isPromoted":true}]
+[{"name":"Sheraton","isPromoted":true,"marketingName":"Xiayiqian"},{"name":"Hilton","isPromoted":false,"marketingName":"Yiqian"},{"name":"Hyatt","isPromoted":false,"marketingName":"Xiayiqian"}]

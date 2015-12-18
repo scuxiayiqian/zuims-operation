@@ -14,57 +14,27 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.web.http.HeaderHttpSessionStrategy;
 
-import java.io.File;
-import java.util.HashMap;
-
 import javax.inject.Inject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import ms.zui.operation.security.OpsUserDetailService;
+import ms.zui.operation.service.GuestService;
+import ms.zui.operation.service.RestaurantService;
+import ms.zui.operation.service.UserService;
 
 @SpringBootApplication
 @EnableRedisHttpSession
 public class Application {
 
-	public static HashMap<String, User> 		repoUser;
-	public static HashMap<String, Restaurant> 	repoRestaurant;	
-	public static HashMap<String, Guest> 		repoGuest;
+	public static final String dataPath = "data/";
 
-	public static ObjectMapper mapper = null;
-
-	public static String dataPath = "data/";
+	public static UserService userService = new UserService();
+	public static GuestService guestService = new GuestService();
+	public static RestaurantService restaurantService = new RestaurantService();
+	
 	
 	public Application() {
-
-		mapper = new ObjectMapper();
-
-		User[] users = null;
-		Restaurant[] restaurants = null;
-		Guest[] guests = null;
-		
-		try {
-			users = mapper.readValue(new File(dataPath + "user.json"), User[].class);
-			restaurants = mapper.readValue(new File(dataPath + "restaurant.json"), Restaurant[].class);
-			guests = mapper.readValue(new File(dataPath + "guest.json"), Guest[].class);
-			
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		repoUser = new HashMap<String, User>();
-		repoRestaurant = new HashMap<String, Restaurant>();
-		repoGuest = new HashMap<String, Guest>();
-		
-		for (int nIndex = 0; nIndex < users.length; nIndex++) {
-			repoUser.put(users[nIndex].getName(), users[nIndex]);
-		}
-		
-		for (int nIndex = 0; nIndex < restaurants.length; nIndex++) {
-			repoRestaurant.put(restaurants[nIndex].getName(), restaurants[nIndex]);
-		}
-		
-		for (int nIndex = 0; nIndex < guests.length; nIndex++) {
-			repoGuest.put(guests[nIndex].getName(), guests[nIndex]);
-		}
 
 	}
 

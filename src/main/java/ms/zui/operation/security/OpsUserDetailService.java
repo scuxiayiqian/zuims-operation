@@ -1,4 +1,4 @@
-package ms.zui.operation;
+package ms.zui.operation.security;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import ms.zui.operation.Application;
+import ms.zui.operation.datamodel.domain.User;
+
 
 @Component
 public class OpsUserDetailService implements UserDetailsService {
@@ -17,7 +20,7 @@ public class OpsUserDetailService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-		User user = Application.repoUser.get(username);
+		User user = Application.userService.getUserByName(username);
 		
 		if(user == null) {
 			throw new UsernameNotFoundException(String.format("User with the username %s doesn't exist", username));
@@ -26,11 +29,20 @@ public class OpsUserDetailService implements UserDetailsService {
 		// Create a granted authority based on user's role. 
 		// Can't pass null authorities to user. Hence initialize with an empty arraylist
 		List<GrantedAuthority> authorities = new ArrayList<>();
-		if(user.isAdmin()) {
+		
+		switch (user.getRole()) {
+			
+		case "admin": 
 			authorities = AuthorityUtils.createAuthorityList("ROLE_ADMIN");
-		}
-		else {
-			authorities = AuthorityUtils.createAuthorityList("ROLE_USER");
+			break;
+		case "manager":
+			authorities = AuthorityUtils.createAuthorityList("ROLE_MANAGER");
+			break;
+		case "marketing":
+			authorities = AuthorityUtils.createAuthorityList("ROLE_MARKETING");
+			break;
+		default:
+			authorities = AuthorityUtils.createAuthorityList("ROLE_MARKETING");
 		}
 		
 		// Create a UserDetails object from the data 

@@ -1,6 +1,5 @@
-package ms.zui.operation;
+package ms.zui.operation.controller;
 
-import java.io.File;
 import java.util.Collection;
 
 import javax.servlet.http.HttpSession;
@@ -13,25 +12,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import ms.zui.operation.Application;
+import ms.zui.operation.datamodel.domain.Guest;
+
 
 @RestController
 public class GuestsController {
 	
     @RequestMapping(value="/guests", method=RequestMethod.GET)
     public Collection<Guest> guests(HttpSession session) {
-    	return Application.repoGuest.values();
+    	return Application.guestService.getAllGuests();
     }
     
     @RequestMapping(value="/guests/{name}", method=RequestMethod.GET)
     public ResponseEntity<Guest> getGuestByName(@PathVariable String name) {
     	
-    	Guest guest = null;
     	HttpStatus httpStatus = HttpStatus.OK;
+
+    	Guest guest = Application.guestService.getGuestByName(name);
     	
-    	if (Application.repoGuest.containsKey(name)) {
-    		guest = Application.repoGuest.get(name);
-    	}
-    	else {
+    	if (guest == null) {
     		httpStatus = HttpStatus.NOT_FOUND;
     	}
     	
@@ -42,15 +42,8 @@ public class GuestsController {
     public ResponseEntity<Guest> createGuest(@RequestBody Guest guest) {
     	
     	HttpStatus httpStatus = HttpStatus.CREATED;
-    	Guest obj = Application.repoGuest.put(guest.getName(), guest);
     	
-    	try {
-        	Application.mapper.writeValue(new File(Application.dataPath + "guest.json"), Application.repoGuest.values());    		
-    	}
-    	catch (Exception e) {
-    		System.out.println(e.getMessage());
-    		httpStatus = HttpStatus.NOT_FOUND;
-    	}
+    	Guest obj = Application.guestService.createGuest(guest);
     	
     	return new ResponseEntity<Guest>(obj, httpStatus);
     }
@@ -59,16 +52,13 @@ public class GuestsController {
     public ResponseEntity<Guest> updateGuest(@PathVariable String name, @RequestBody Guest guest) {
 
     	HttpStatus httpStatus = HttpStatus.OK;
-    	Guest obj = Application.repoGuest.put(guest.getName(), guest);
+
+    	Guest obj = Application.guestService.updateGuest(guest);
     	
-    	try {
-        	Application.mapper.writeValue(new File(Application.dataPath + "guest.json"), Application.repoGuest.values());    		
-    	}
-    	catch (Exception e) {
-    		System.out.println(e.getMessage());
+    	if (guest == null) {
     		httpStatus = HttpStatus.NOT_FOUND;
     	}
-    	
+    	    	
     	return new ResponseEntity<Guest>(obj, httpStatus);
     }
     
@@ -77,13 +67,9 @@ public class GuestsController {
 
     	HttpStatus httpStatus = HttpStatus.OK;
     	
-    	Guest obj = Application.repoGuest.remove(name);
+    	Guest obj = Application.guestService.deleteGuest(name);
     	
-    	try {
-        	Application.mapper.writeValue(new File(Application.dataPath + "guest.json"), Application.repoGuest.values());    		
-    	}
-    	catch (Exception e) {
-    		System.out.println(e.getMessage());
+    	if (obj == null) {
     		httpStatus = HttpStatus.NOT_FOUND;
     	}
     	

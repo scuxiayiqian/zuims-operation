@@ -1,16 +1,13 @@
-package ms.zui.operation;
+package ms.zui.operation.controller;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.session.web.http.HeaderHttpSessionStrategy;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,17 +15,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import ms.zui.operation.Application;
+import ms.zui.operation.datamodel.domain.User;
+
 
 @RestController
 public class UsersController {
-	@Bean
-	HeaderHttpSessionStrategy sessionStrategy() {
-		return new HeaderHttpSessionStrategy();
-	}
 	
 	@RequestMapping(value="/token", method=RequestMethod.POST)
 	public ResponseEntity<Map<String, String>> token(HttpSession session, @RequestBody User user) {
-		User objUser = Application.repoUser.get(user.getName());
+		User objUser = Application.userService.getUserByName(user.getName());
 		
 		if (objUser != null) {
 			if (objUser.getPassword().compareTo(user.getPassword()) == 0) {
@@ -54,19 +50,17 @@ public class UsersController {
 	
     @RequestMapping(value="/users", method=RequestMethod.GET)
     public Collection<User> users(HttpSession session) {
-    	return Application.repoUser.values();
+    	return Application.userService.getAllUsers();
     }
     
     @RequestMapping(value="/users/{name}", method=RequestMethod.GET)
     public ResponseEntity<User> getUserByName(@PathVariable String name) {
     	
-    	User user = null;
     	HttpStatus httpStatus = HttpStatus.OK;
     	
-    	if (Application.repoUser.containsKey(name)) {
-    		user = Application.repoUser.get(name);
-    	}
-    	else {
+    	User user = Application.userService.getUserByName(name);
+    	
+    	if (user == null) {
     		httpStatus = HttpStatus.NOT_FOUND;
     	}
     	
@@ -76,30 +70,16 @@ public class UsersController {
     @RequestMapping(value="/users", method=RequestMethod.POST, consumes="application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@RequestBody User user) {
-    	User obj = Application.repoUser.put(user.getName(), user);
     	
-    	try {
-        	Application.mapper.writeValue(new File(Application.dataPath + "user.json"), Application.repoUser.values());    		
-    	}
-    	catch (Exception e) {
-    		System.out.println(e.getMessage());
-    	}
-    	
+    	User obj = Application.userService.createUser(user);
+    	   	
     	return obj;
     }
     
     @RequestMapping(value="/users/{name}", method=RequestMethod.PUT, consumes="application/json")
     public User updateUser(@PathVariable String name, @RequestBody User user) {
 
-    	Application.repoUser.get(name).setPassword(user.getPassword());
-    	User obj = Application.repoUser.put(user.getName(), user);
-    	
-    	try {
-        	Application.mapper.writeValue(new File(Application.dataPath + "user.json"), Application.repoUser.values());    		
-    	}
-    	catch (Exception e) {
-    		System.out.println(e.getMessage());
-    	}
+    	User obj = Application.userService.updateUser(user);
     	
     	return obj;
     }
@@ -107,23 +87,17 @@ public class UsersController {
     @RequestMapping(value="/users/{name}", method=RequestMethod.DELETE)
     public HttpStatus deleteUser(@PathVariable String name) {
 
-    	Application.repoUser.remove(name);
-    	
-    	try {
-        	Application.mapper.writeValue(new File(Application.dataPath + "user.json"), Application.repoUser.values());    		
-    	}
-    	catch (Exception e) {
-    		System.out.println(e.getMessage());
-    	}
+    	Application.userService.deleteUser(name);
     	
     	return HttpStatus.OK;
     }
     
     @RequestMapping(value="/users/login", method=RequestMethod.POST, consumes="application/json")
     public HttpStatus login(@RequestBody User user) {
-    	if (Application.repoUser.get(user.getName()).getPassword().equals(user.getPassword())) {
+    	
+    	if (Application.userService.login(user)) {
     		return HttpStatus.OK;
-    	}
+    	} 
     	else {
     		return HttpStatus.NOT_FOUND;
     	}
