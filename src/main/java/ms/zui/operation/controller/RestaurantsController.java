@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ms.zui.operation.Application;
@@ -75,15 +76,19 @@ public class RestaurantsController {
     }
     
     @RequestMapping(value="/restaurants/promoted", method=RequestMethod.GET)
-    public Collection<Restaurant> getPromotedRestaurants(HttpSession session) {
+    public Collection<Restaurant> getPromotedRestaurants(HttpSession session,
+    		@RequestParam(value="city", required=true, defaultValue="") String city
+    		) {
     	    	
-    	return Application.restaurantService.getPromotedRestaurants();
+    	return Application.restaurantService.getPromotedRestaurantsByCity(city);
     }
  
     @RequestMapping(value="/restaurants/promoted", method=RequestMethod.PUT)
-    public ResponseEntity<Collection<Restaurant>> updatePromotedRestaurants(HttpSession session, @RequestBody Restaurant[] restaurants) {
+    public ResponseEntity<Collection<Restaurant>> updatePromotedRestaurants(HttpSession session, 
+    		@RequestParam(value="city", required=true, defaultValue="") String city, 
+    		@RequestBody Restaurant[] restaurants) {
     	
-    	return new ResponseEntity<Collection<Restaurant>>(Application.restaurantService.updatePromotedRestaurants(restaurants), HttpStatus.OK);
+    	return new ResponseEntity<Collection<Restaurant>>(Application.restaurantService.updatePromotedRestaurantsByCity(city, restaurants), HttpStatus.OK);
     }
 
     @RequestMapping(value="/users/{name}/restaurants", method=RequestMethod.GET)

@@ -43,13 +43,13 @@ public class RestaurantService {
 		return repoRestaurant.values();
 	}
 
-	public Collection<Restaurant> getPromotedRestaurants() {
+	public Collection<Restaurant> getPromotedRestaurantsByCity(String city) {
 		
 		ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
 		
 		for (Restaurant obj: repoRestaurant.values()) {
 			
-			if (obj.getIsPromoted()) {
+			if (obj.getIsPromoted() && city.equals(obj.getCity())) {
 				
 				restaurants.add(obj);
 			}
@@ -73,20 +73,29 @@ public class RestaurantService {
 		return restaurants;
 	}
 	
-	private void clearPromotedRestaurants() {
+	private void clearPromotedRestaurantsByCity(String city) {
 		
 		for (Restaurant obj: repoRestaurant.values()) {
-			obj.setIsPromoted(false);
+			
+			if (city.equals(obj.getCity())) {
+				
+				obj.setIsPromoted(false);
+			}
 		}
 	}
 	
-	public Collection<Restaurant> updatePromotedRestaurants(Restaurant[] restaurants) {
+	public Collection<Restaurant> updatePromotedRestaurantsByCity(String city, Restaurant[] restaurants) {
 		
-		clearPromotedRestaurants();
+		clearPromotedRestaurantsByCity(city);
 		
 		for (Restaurant obj: restaurants) {
 			
-			repoRestaurant.put(obj.getName(), obj);
+			Restaurant restaurant = repoRestaurant.get(obj.getName());
+			
+			if (restaurant.getCity().equals(city)) {
+				
+				repoRestaurant.put(obj.getName(), obj);
+			}
 		}
 
 	   	try {
@@ -96,7 +105,7 @@ public class RestaurantService {
     		System.out.println(e.getMessage());
     	}
 
-		return getPromotedRestaurants();
+		return getPromotedRestaurantsByCity(city);
 	}
 	
 	public Restaurant createUser(Restaurant restaurant) {

@@ -16,8 +16,6 @@ import org.springframework.session.web.http.HeaderHttpSessionStrategy;
 
 import javax.inject.Inject;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import ms.zui.operation.security.OpsUserDetailService;
 import ms.zui.operation.service.GuestService;
 import ms.zui.operation.service.RestaurantService;

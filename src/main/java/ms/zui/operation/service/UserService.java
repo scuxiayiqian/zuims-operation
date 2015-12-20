@@ -19,8 +19,6 @@ public class UserService {
 		User[] users = null;
 		
 		try {
-			System.out.println(System.getProperty("user.dir") + "/" + Application.dataPath + "user.json");
-			System.out.println(new File("test.txt").getAbsoluteFile());
 			users = mapper.readValue(new File(System.getProperty("user.dir") + "/" + Application.dataPath + "user.json"), User[].class);
 			
 		} catch (Exception e) {

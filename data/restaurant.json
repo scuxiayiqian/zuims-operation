@@ -1,1 +1,1 @@
-[{"name":"Sheraton","isPromoted":true,"marketingName":"Xiayiqian"},{"name":"Hilton","isPromoted":false,"marketingName":"Yiqian"},{"name":"Hyatt","isPromoted":false,"marketingName":"Xiayiqian"}]
+[{"name":"Sheraton","city":"Shanghai","isPromoted":false,"marketingName":"Xiayiqian"},{"name":"Hilton","city":"Beijing","isPromoted":false,"marketingName":"Yiqian"},{"name":"Hyatt","city":"Guangzhou","isPromoted":false,"marketingName":"Xiayiqian"}]
