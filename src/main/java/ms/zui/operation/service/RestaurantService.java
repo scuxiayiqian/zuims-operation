@@ -108,7 +108,12 @@ public class RestaurantService {
 		return getPromotedRestaurantsByCity(city);
 	}
 	
-	public Restaurant createUser(Restaurant restaurant) {
+	public Restaurant createRestaurant(Restaurant restaurant) {
+		
+		if (repoRestaurant.get(restaurant.getName()) != null) {
+			
+			return null;
+		}
 		
 		repoRestaurant.put(restaurant.getName(), restaurant);
 		

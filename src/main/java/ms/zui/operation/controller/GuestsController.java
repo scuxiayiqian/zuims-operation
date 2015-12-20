@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import ms.zui.operation.datamodel.domain.Guest;
 public class GuestsController {
 	
     @RequestMapping(value="/guests", method=RequestMethod.GET)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     public Collection<Guest> guests(HttpSession session) {
     	return Application.guestService.getAllGuests();
     }
@@ -39,6 +41,7 @@ public class GuestsController {
     }
     
     @RequestMapping(value="/guests", method=RequestMethod.POST, consumes="application/json")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Guest> createGuest(@RequestBody Guest guest) {
     	
     	HttpStatus httpStatus = HttpStatus.CREATED;
@@ -63,6 +66,7 @@ public class GuestsController {
     }
     
     @RequestMapping(value="/guests/{name}", method=RequestMethod.DELETE)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Guest> deleteGuest(@PathVariable String name) {
 
     	HttpStatus httpStatus = HttpStatus.OK;

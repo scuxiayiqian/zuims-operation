@@ -47,8 +47,12 @@ public class RestaurantsController {
     	
     	HttpStatus httpStatus = HttpStatus.CREATED;
     	
-    	Restaurant obj = Application.restaurantService.createUser(restaurant);
-    	  	
+    	Restaurant obj = Application.restaurantService.createRestaurant(restaurant);
+
+    	if (obj == null) {
+    		httpStatus = HttpStatus.CONFLICT;
+    	}
+    	
     	return new ResponseEntity<Restaurant>(obj, httpStatus);
     }
     

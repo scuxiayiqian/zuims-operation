@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,20 +22,7 @@ import ms.zui.operation.datamodel.domain.User;
 
 @RestController
 public class UsersController {
-	
-	@RequestMapping(value="/token", method=RequestMethod.POST)
-	public ResponseEntity<Map<String, String>> token(HttpSession session, @RequestBody User user) {
-		User objUser = Application.userService.getUserByName(user.getName());
 		
-		if (objUser != null) {
-			if (objUser.getPassword().compareTo(user.getPassword()) == 0) {
-				session.setAttribute("user", objUser);
-				return new ResponseEntity<Map<String, String>>(Collections.singletonMap("token", session.getId()), HttpStatus.OK);			
-			}
-		}
-		return new ResponseEntity<Map<String, String>>(Collections.singletonMap("token", ""), HttpStatus.NOT_FOUND);
-	}
-	
     @RequestMapping(value="/users/logout", method=RequestMethod.PUT)
     public ResponseEntity<User> logout(HttpSession session) {
     	User user = (User) session.getAttribute("user");
@@ -49,11 +37,13 @@ public class UsersController {
 	}
 	
     @RequestMapping(value="/users", method=RequestMethod.GET)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     public Collection<User> users(HttpSession session) {
     	return Application.userService.getAllUsers();
     }
     
     @RequestMapping(value="/users/{name}", method=RequestMethod.GET)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<User> getUserByName(@PathVariable String name) {
     	
     	HttpStatus httpStatus = HttpStatus.OK;
@@ -69,6 +59,7 @@ public class UsersController {
     
     @RequestMapping(value="/users", method=RequestMethod.POST, consumes="application/json")
     @ResponseStatus(HttpStatus.CREATED)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     public User createUser(@RequestBody User user) {
     	
     	User obj = Application.userService.createUser(user);
@@ -77,6 +68,7 @@ public class UsersController {
     }
     
     @RequestMapping(value="/users/{name}", method=RequestMethod.PUT, consumes="application/json")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     public User updateUser(@PathVariable String name, @RequestBody User user) {
 
     	User obj = Application.userService.updateUser(user);
@@ -85,6 +77,7 @@ public class UsersController {
     }
     
     @RequestMapping(value="/users/{name}", method=RequestMethod.DELETE)
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     public HttpStatus deleteUser(@PathVariable String name) {
 
     	Application.userService.deleteUser(name);
