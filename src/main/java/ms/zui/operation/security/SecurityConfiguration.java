@@ -8,10 +8,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableRedisHttpSession
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -23,13 +27,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.httpBasic();
 		http
 			.authorizeRequests()
-				.regexMatchers(HttpMethod.OPTIONS, "/users").permitAll()
-				.regexMatchers(HttpMethod.OPTIONS, "/users/logout").permitAll()
+				.regexMatchers(HttpMethod.OPTIONS, "/users", "/users/logout").permitAll()
 				.regexMatchers(HttpMethod.OPTIONS, "/restaurants").permitAll()
 				.antMatchers("/token").permitAll()
-				.anyRequest().authenticated()
-		.and()
-			.csrf().disable();
+				.anyRequest().authenticated();
+		
+		http.csrf().disable();
 	}
 	
 	@Autowired
@@ -38,5 +41,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.userDetailsService(opsUserDetailService);
 				//.passwordEncoder(new BCryptPasswordEncoder());
 	}
-
 }

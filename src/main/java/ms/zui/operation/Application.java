@@ -11,7 +11,6 @@ import ms.zui.operation.service.RestaurantService;
 import ms.zui.operation.service.UserService;
 
 @SpringBootApplication
-@EnableRedisHttpSession
 public class Application {
 
 	public static final String dataPath = "data/";
