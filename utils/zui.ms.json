@@ -100,8 +100,8 @@
 		},
 		{
 			"id": "2e82a0a3-a4d5-3db7-bbfb-78d416cf8830",
-			"headers": "x-auth-token: 79fe09c8-e521-4899-ad27-581f5d8b1dc6\nContent-Type: application/json\n",
-			"url": "http://localhost:8080/restaurants/promoted?city=Shanghai",
+			"headers": "x-auth-token: 10da4374-10b7-4d1f-ab32-f1ca7a11dbde\nContent-Type: application/json\n",
+			"url": "http://localhost:8080/cities/Shanghai/restaurants/promoted",
 			"preRequestScript": "",
 			"pathVariables": {},
 			"method": "PUT",
@@ -111,12 +111,12 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1450594682966,
+			"time": 1450605403137,
 			"name": "update promoted restaurants",
 			"description": "",
 			"collectionId": "8b9e6919-2527-bdac-9220-bdeed877c162",
 			"responses": [],
-			"rawModeData": "[\n    {\n        \"name\":\"Sheraton\",\n        \"city\":\"Shanghai\",\n        \"isPromoted\":false,\n        \"marketingName\":\"Xiayiqian\"\n    }\n]"
+			"rawModeData": "[\n    {\n        \"name\":\"Sheraton\",\n        \"city\":\"Shanghai\",\n        \"isPromoted\":true,\n        \"marketingName\":\"Xiayiqian\"\n    }\n]"
 		},
 		{
 			"id": "36850ea0-17c0-b886-f41c-becbc062aa99",
@@ -327,8 +327,8 @@
 		},
 		{
 			"id": "c95f84d9-a2a4-df04-1876-040fdf2d3473",
-			"headers": "x-auth-token: 79fe09c8-e521-4899-ad27-581f5d8b1dc6\n",
-			"url": "http://localhost:8080/restaurants/promoted?city=Shanghai",
+			"headers": "x-auth-token: 10da4374-10b7-4d1f-ab32-f1ca7a11dbde\n",
+			"url": "http://localhost:8080/cities/Shanghai/restaurants/promoted",
 			"preRequestScript": "",
 			"pathVariables": {},
 			"method": "GET",
@@ -338,7 +338,7 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1450594657232,
+			"time": 1450605327181,
 			"name": "list promoted restaurants",
 			"description": "",
 			"collectionId": "8b9e6919-2527-bdac-9220-bdeed877c162",
