@@ -1,6 +1,5 @@
-package ms.zui.operation;
+package ms.zui.operation.controller;
 
-import java.io.File;
 import java.util.Collection;
 
 import javax.servlet.http.HttpSession;
@@ -13,25 +12,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import ms.zui.operation.Application;
+import ms.zui.operation.datamodel.domain.Restaurant;
+
 
 @RestController
 public class RestaurantsController {
 	
     @RequestMapping(value="/restaurants", method=RequestMethod.GET)
     public Collection<Restaurant> restaurants(HttpSession session) {
-    	return Application.repoRestaurant.values();
+    	return Application.restaurantService.getAllRestaurants();
     }
     
     @RequestMapping(value="/restaurants/{name}", method=RequestMethod.GET)
     public ResponseEntity<Restaurant> getRestaurantByName(@PathVariable String name) {
     	
-    	Restaurant restaurant = null;
     	HttpStatus httpStatus = HttpStatus.OK;
     	
-    	if (Application.repoRestaurant.containsKey(name)) {
-    		restaurant = Application.repoRestaurant.get(name);
-    	}
-    	else {
+    	Restaurant restaurant = Application.restaurantService.getRestaurantByName(name);
+    	if (restaurant == null) {
     		httpStatus = HttpStatus.NOT_FOUND;
     	}
     	
@@ -42,16 +41,9 @@ public class RestaurantsController {
     public ResponseEntity<Restaurant> createRestaurant(@RequestBody Restaurant restaurant) {
     	
     	HttpStatus httpStatus = HttpStatus.CREATED;
-    	Restaurant obj = Application.repoRestaurant.put(restaurant.getName(), restaurant);
     	
-    	try {
-        	Application.mapper.writeValue(new File(Application.dataPath + "restaurant.json"), Application.repoRestaurant.values());    		
-    	}
-    	catch (Exception e) {
-    		System.out.println(e.getMessage());
-    		httpStatus = HttpStatus.NOT_FOUND;
-    	}
-    	
+    	Restaurant obj = Application.restaurantService.createUser(restaurant);
+    	  	
     	return new ResponseEntity<Restaurant>(obj, httpStatus);
     }
     
@@ -59,16 +51,12 @@ public class RestaurantsController {
     public ResponseEntity<Restaurant> updateRestaurant(@PathVariable String name, @RequestBody Restaurant restaurant) {
 
     	HttpStatus httpStatus = HttpStatus.OK;
-    	Restaurant obj = Application.repoRestaurant.put(restaurant.getName(), restaurant);
+
+    	Restaurant obj = Application.restaurantService.updateRestaurant(restaurant);
     	
-    	try {
-        	Application.mapper.writeValue(new File(Application.dataPath + "restaurant.json"), Application.repoRestaurant.values());    		
-    	}
-    	catch (Exception e) {
-    		System.out.println(e.getMessage());
+    	if (obj == null) {
     		httpStatus = HttpStatus.NOT_FOUND;
     	}
-    	
     	return new ResponseEntity<Restaurant>(obj, httpStatus);
     }
     
@@ -77,16 +65,30 @@ public class RestaurantsController {
 
     	HttpStatus httpStatus = HttpStatus.OK;
     	
-    	Restaurant obj = Application.repoRestaurant.remove(name);
+    	Restaurant obj = Application.restaurantService.deleteRestaurant(name);
     	
-    	try {
-        	Application.mapper.writeValue(new File(Application.dataPath + "restaurant.json"), Application.repoRestaurant.values());    		
-    	}
-    	catch (Exception e) {
-    		System.out.println(e.getMessage());
+    	if (obj == null) {
     		httpStatus = HttpStatus.NOT_FOUND;
     	}
     	
     	return new ResponseEntity<Restaurant>(obj, httpStatus);
     }
-}
+    
+    @RequestMapping(value="/restaurants/promoted", method=RequestMethod.GET)
+    public Collection<Restaurant> getPromotedRestaurants(HttpSession session) {
+    	    	
+    	return Application.restaurantService.getPromotedRestaurants();
+    }
+ 
+    @RequestMapping(value="/restaurants/promoted", method=RequestMethod.PUT)
+    public ResponseEntity<Collection<Restaurant>> updatePromotedRestaurants(HttpSession session, @RequestBody Restaurant[] restaurants) {
+    	
+    	return new ResponseEntity<Collection<Restaurant>>(Application.restaurantService.updatePromotedRestaurants(restaurants), HttpStatus.OK);
+    }
+
+    @RequestMapping(value="/users/{name}/restaurants", method=RequestMethod.GET)
+    public Collection<Restaurant> getRestaurantsByMarketing(HttpSession session, @PathVariable String name) {
+    	    	
+    	return Application.restaurantService.getRestaurantsByMarketingName(name);
+    }
+ }

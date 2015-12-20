@@ -1,4 +1,4 @@
-package ms.zui.operation;
+package ms.zui.operation.datamodel.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;;
