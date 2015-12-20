@@ -88,6 +88,7 @@ public class Application {
 				.authorizeRequests()
 					.regexMatchers(HttpMethod.OPTIONS, "/users").permitAll()
 					.regexMatchers(HttpMethod.OPTIONS, "/users/logout").permitAll()
+					.regexMatchers(HttpMethod.OPTIONS, "/restaurants").permitAll()
 					.antMatchers("/token").permitAll()
 					.anyRequest().authenticated()
 			.and()
