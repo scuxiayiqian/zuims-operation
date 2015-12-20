@@ -74,19 +74,17 @@ public class RestaurantsController {
     	
     	return new ResponseEntity<Restaurant>(obj, httpStatus);
     }
-    
-    @RequestMapping(value="/restaurants/promoted", method=RequestMethod.GET)
-    public Collection<Restaurant> getPromotedRestaurants(HttpSession session,
-    		@RequestParam(value="city", required=true, defaultValue="") String city
-    		) {
+     
+    @RequestMapping(value="/cities/{city}/restaurants/promoted", method=RequestMethod.GET)
+    public Collection<Restaurant> getPromotedRestaurantsByCity(HttpSession session,
+    		@PathVariable String city) {
     	    	
     	return Application.restaurantService.getPromotedRestaurantsByCity(city);
     }
- 
-    @RequestMapping(value="/restaurants/promoted", method=RequestMethod.PUT)
+    
+    @RequestMapping(value="/cities/{city}/restaurants/promoted", method=RequestMethod.PUT)
     public ResponseEntity<Collection<Restaurant>> updatePromotedRestaurants(HttpSession session, 
-    		@RequestParam(value="city", required=true, defaultValue="") String city, 
-    		@RequestBody Restaurant[] restaurants) {
+    		@PathVariable String city, @RequestBody Restaurant[] restaurants) {
     	
     	return new ResponseEntity<Collection<Restaurant>>(Application.restaurantService.updatePromotedRestaurantsByCity(city, restaurants), HttpStatus.OK);
     }
