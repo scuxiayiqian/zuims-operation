@@ -20,7 +20,6 @@ public class UserService {
 		
 		try {
 			users = mapper.readValue(new File(System.getProperty("user.dir") + "/" + Application.dataPath + "user.json"), User[].class);
-			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

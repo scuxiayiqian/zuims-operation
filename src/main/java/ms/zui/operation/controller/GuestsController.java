@@ -58,7 +58,7 @@ public class GuestsController {
 
     	Guest obj = Application.guestService.updateGuest(guest);
     	
-    	if (guest == null) {
+    	if (obj == null) {
     		httpStatus = HttpStatus.NOT_FOUND;
     	}
     	    	

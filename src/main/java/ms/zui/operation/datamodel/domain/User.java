@@ -1,8 +1,10 @@
 package ms.zui.operation.datamodel.domain;
 
+import java.util.Collection;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 public class User {
@@ -13,13 +15,13 @@ public class User {
 	/*
 	 * Roles: admin, manager, marketing
 	 */
-	private String role;
+	private Collection<Role> roles;
 	
 	@JsonCreator
-	public User(@JsonProperty("name") String name, @JsonProperty("password") String password, @JsonProperty("role") String role){
+	public User(@JsonProperty("name") String name, @JsonProperty("password") String password, @JsonProperty("roles")  Collection<Role> roles){
 		this.name = name;
 		this.password = password;
-		this.role = role;
+		this.roles = roles;
 	}
 	
 	public String getName(){
@@ -38,16 +40,38 @@ public class User {
 		this.password = value;
 	}	
 	
-	public String getRole() {
-		return role;
+	public Collection<Role> getRoles() {
+		return this.roles;
 	}
-
-	public void setRole(String value) {
-		this.role = value;
+	
+	//@JsonDeserialize(using = UserRolesDeserializer.class)
+	public void setRoles(Collection<Role> roles) {
+		this.roles = roles;
 	}
 	
 	@JsonIgnore
 	public boolean isAdmin() {
-		return role.compareTo("admin") == 0 ? true : false;
+		boolean isAdmin = false;
+		
+		for (Role role: roles) {
+			if (role.getName().equals("admin")) {
+				isAdmin = true;
+			}
+		}
+		return isAdmin;
+	}
+	
+	@JsonIgnore
+	public String[] getAuthorities() {
+		
+		String[] authorities = new String[roles.size()];
+		
+		int nIndex = 0;
+		for (Role role: roles) {
+			authorities[nIndex] = role.AuthorizationName();
+			nIndex ++;
+		}
+		
+		return authorities;
 	}
 }

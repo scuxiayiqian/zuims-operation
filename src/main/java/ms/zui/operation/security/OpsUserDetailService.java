@@ -29,21 +29,8 @@ public class OpsUserDetailService implements UserDetailsService {
 		// Create a granted authority based on user's role. 
 		// Can't pass null authorities to user. Hence initialize with an empty arraylist
 		List<GrantedAuthority> authorities = new ArrayList<>();
-		
-		switch (user.getRole()) {
-			
-		case "admin": 
-			authorities = AuthorityUtils.createAuthorityList("ROLE_ADMIN");
-			break;
-		case "manager":
-			authorities = AuthorityUtils.createAuthorityList("ROLE_MANAGER");
-			break;
-		case "marketing":
-			authorities = AuthorityUtils.createAuthorityList("ROLE_MARKETING");
-			break;
-		default:
-			authorities = AuthorityUtils.createAuthorityList("ROLE_MARKETING");
-		}
+
+		authorities = AuthorityUtils.createAuthorityList(user.getAuthorities());
 		
 		// Create a UserDetails object from the data 
 		UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), authorities);

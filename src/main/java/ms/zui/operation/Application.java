@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.web.http.HeaderHttpSessionStrategy;
 
+import ms.zui.operation.service.CityService;
 import ms.zui.operation.service.GuestService;
 import ms.zui.operation.service.RestaurantService;
 import ms.zui.operation.service.UserService;
@@ -15,10 +16,10 @@ public class Application {
 
 	public static final String dataPath = "data/";
 
+	public static RestaurantService restaurantService = new RestaurantService();
 	public static UserService userService = new UserService();
 	public static GuestService guestService = new GuestService();
-	public static RestaurantService restaurantService = new RestaurantService();
-	
+	public static CityService cityService = new CityService();
 	
 	public Application() {
 

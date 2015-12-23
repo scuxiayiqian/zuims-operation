@@ -16,10 +16,10 @@ public class GuestService {
 	
 	public GuestService() {
 		
-		Guest[] restaurants = null;
+		Guest[] guests = null;
 		
 		try {
-			restaurants = mapper.readValue(new File(Application.dataPath + "guest.json"), Guest[].class);
+			guests = mapper.readValue(new File(Application.dataPath + "guest.json"), Guest[].class);
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -27,8 +27,8 @@ public class GuestService {
 
 		repoGuest = new HashMap<String, Guest>();
 		
-		for (int nIndex = 0; nIndex < restaurants.length; nIndex++) {
-			repoGuest.put(restaurants[nIndex].getName(), restaurants[nIndex]);
+		for (int nIndex = 0; nIndex < guests.length; nIndex++) {
+			repoGuest.put(guests[nIndex].getName(), guests[nIndex]);
 		}
 	}
 	
