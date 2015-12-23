@@ -27,9 +27,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.httpBasic();
 		http
 			.authorizeRequests()
-				.regexMatchers(HttpMethod.OPTIONS, "/users", "/users/logout").permitAll()
-				.regexMatchers(HttpMethod.OPTIONS, "/restaurants").permitAll()
-				.antMatchers("/token").permitAll()
+				.regexMatchers(HttpMethod.OPTIONS, "/token", "/users", "/restaurants", "/guests").permitAll()
 				.anyRequest().authenticated();
 		
 		http.csrf().disable();
@@ -39,6 +37,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth
 			.userDetailsService(opsUserDetailService);
-				//.passwordEncoder(new BCryptPasswordEncoder());
+				//.passwordEncoder(new BCryptPasswordEncoder());imp
 	}
 }
