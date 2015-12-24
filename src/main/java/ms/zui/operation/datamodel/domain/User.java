@@ -74,4 +74,18 @@ public class User {
 		
 		return authorities;
 	}
+	@JsonIgnore
+	public boolean hasRole(String role) {
+		
+		boolean flag = false;
+		
+		for (Role r: roles) {
+			if(role.equals(r.getName())) {
+				flag = true;
+				break;
+			}
+		}
+		
+		return flag;
+	}
 }

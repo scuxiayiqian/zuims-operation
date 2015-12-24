@@ -125,7 +125,8 @@ public class RestaurantService {
 	
 	public Restaurant createRestaurant(Restaurant restaurant) {
 		
-		if (repoRestaurant.get(restaurant.getName()) != null) {
+		Restaurant rest = repoRestaurant.get(restaurant.getName());
+		if (rest != null) {
 			
 			return null;
 		}

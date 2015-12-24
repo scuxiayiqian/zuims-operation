@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ms.zui.operation.Application;
 import ms.zui.operation.datamodel.domain.User;
+
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class UserService {
@@ -40,6 +42,19 @@ public class UserService {
 		return repoUser.values();
 	}
 	
+	public Collection<User> getUsersByRole(String role) {
+		
+		ArrayList<User> users = new ArrayList<User>();
+		
+		for (User user: repoUser.values()) {
+			
+			if (user.hasRole(role)) {
+				
+				users.add(user);
+			}
+		}
+		return users;
+	}
 	public User createUser(User user) {
 		
 		repoUser.put(user.getName(), user);

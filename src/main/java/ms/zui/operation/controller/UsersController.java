@@ -58,6 +58,17 @@ public class UsersController {
     	return new ResponseEntity<User>(user, httpStatus);
     }
     
+    @RequestMapping(value="/roles/{role}/users", method=RequestMethod.GET)
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')")
+    public Collection<User> getUsersByRole(@PathVariable String role) {
+    	
+    	HttpStatus httpStatus = HttpStatus.OK;
+    	
+    	Collection<User> users = Application.userService.getUsersByRole(role);
+    	    	
+    	return users;
+    }
+
     @RequestMapping(value="/users", method=RequestMethod.POST, consumes="application/json")
     @ResponseStatus(HttpStatus.CREATED)
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
