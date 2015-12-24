@@ -58,6 +58,21 @@ public class RestaurantService {
 		return restaurants;
 	}
 
+	public Collection<Restaurant> getRestaurantsByCity(String city) {
+		
+		ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
+		
+		for (Restaurant obj: repoRestaurant.values()) {
+			
+			if (city.equals(obj.getCity())) {
+				
+				restaurants.add(obj);
+			}
+		}
+		
+		return restaurants;
+	}
+
 	public Collection<Restaurant> getRestaurantsByMarketingName(String marketingName) {
 		
 		ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();

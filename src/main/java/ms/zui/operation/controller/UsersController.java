@@ -23,7 +23,7 @@ import ms.zui.operation.datamodel.domain.User;
 @RestController
 public class UsersController {
 		
-    @RequestMapping(value="/users/logout", method=RequestMethod.PUT)
+    @RequestMapping(value="/token", method=RequestMethod.DELETE)
     public ResponseEntity<User> logout(HttpSession session) {
     	User user = (User) session.getAttribute("user");
     	session.invalidate();
@@ -33,6 +33,7 @@ public class UsersController {
 
     @RequestMapping(value="/token", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, String>> token(HttpSession session) {
+    	session.setAttribute("user", null);
 		return new ResponseEntity<Map<String, String>>(Collections.singletonMap("token", session.getId()), HttpStatus.OK);
 	}
 	
@@ -83,16 +84,5 @@ public class UsersController {
     	Application.userService.deleteUser(name);
     	
     	return HttpStatus.OK;
-    }
-    
-    @RequestMapping(value="/users/login", method=RequestMethod.POST, consumes="application/json")
-    public HttpStatus login(@RequestBody User user) {
-    	
-    	if (Application.userService.login(user)) {
-    		return HttpStatus.OK;
-    	} 
-    	else {
-    		return HttpStatus.NOT_FOUND;
-    	}
     }
 }

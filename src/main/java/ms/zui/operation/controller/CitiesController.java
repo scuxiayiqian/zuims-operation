@@ -21,7 +21,6 @@ import ms.zui.operation.datamodel.domain.City;
 public class CitiesController {
 	
     @RequestMapping(value="/cities", method=RequestMethod.GET)
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
     public Collection<City> getCities(HttpSession session) {
     	return Application.cityService.getAllCities();
     }

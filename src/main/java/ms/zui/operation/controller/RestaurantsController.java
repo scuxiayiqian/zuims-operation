@@ -41,6 +41,13 @@ public class RestaurantsController {
     	return new ResponseEntity<Restaurant>(restaurant, httpStatus);
     }
     
+    @RequestMapping(value="/cities/{name}/restaurants", method=RequestMethod.GET)
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_MARKETING')")    
+    public Collection<Restaurant> getRestaurantByCity(@PathVariable String name) {
+    	
+    	return Application.restaurantService.getRestaurantsByCity(name);
+    }
+
     @RequestMapping(value="/restaurants", method=RequestMethod.POST, consumes="application/json")
     @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_MARKETING')")
     public ResponseEntity<Restaurant> createRestaurant(@RequestBody Restaurant restaurant) {
