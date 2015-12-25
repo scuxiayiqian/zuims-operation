@@ -1,7 +1,7 @@
 package ms.zui.operation.controller;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,17 +25,26 @@ import ms.zui.operation.datamodel.domain.User;
 public class UsersController {
 		
     @RequestMapping(value="/token", method=RequestMethod.DELETE)
-    public ResponseEntity<User> logout(HttpSession session) {
-    	User user = (User) session.getAttribute("user");
+    public ResponseEntity<String> logout(HttpSession session) {
+    	String user = (String) session.getAttribute("user");
     	session.invalidate();
 
-    	return new ResponseEntity<User>(user, HttpStatus.OK);
+    	return new ResponseEntity<String>(user, HttpStatus.OK);
     }
 
     @RequestMapping(value="/token", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, String>> token(HttpSession session) {
-    	session.setAttribute("user", null);
-		return new ResponseEntity<Map<String, String>>(Collections.singletonMap("token", session.getId()), HttpStatus.OK);
+	public ResponseEntity<Map<String, Object>> token(HttpSession session) {
+    	
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	
+    	User user = Application.userService.getUserByName(SecurityContextHolder.getContext().getAuthentication().getName());
+    	
+    	map.put("user", user);
+    	map.put("token", session.getId());
+    	
+    	session.setAttribute("user", user.getName());
+    	
+		return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
 	}
 	
     @RequestMapping(value="/users", method=RequestMethod.GET)
@@ -61,9 +71,7 @@ public class UsersController {
     @RequestMapping(value="/roles/{role}/users", method=RequestMethod.GET)
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')")
     public Collection<User> getUsersByRole(@PathVariable String role) {
-    	
-    	HttpStatus httpStatus = HttpStatus.OK;
-    	
+    	    	
     	Collection<User> users = Application.userService.getUsersByRole(role);
     	    	
     	return users;
