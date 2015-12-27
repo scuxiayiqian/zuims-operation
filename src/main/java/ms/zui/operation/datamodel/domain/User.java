@@ -68,12 +68,13 @@ public class User {
 		
 		int nIndex = 0;
 		for (Role role: roles) {
-			authorities[nIndex] = role.AuthorizationName();
+			authorities[nIndex] = role.toAuthorizationName();
 			nIndex ++;
 		}
 		
 		return authorities;
 	}
+	
 	@JsonIgnore
 	public boolean hasRole(String role) {
 		

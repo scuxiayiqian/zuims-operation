@@ -1,1 +1,1 @@
-[{"name":"admin"}, {"name":"manager"}, {"name":"marketing"}]
+[{"name":"marketing","rights":[{"name":"restaurantManagement","parent":""}]},{"name":"manager","rights":[{"name":"userManagement","parent":""},{"name":"city","parent":"restaurantManagement"},{"name":"restaurantManagement","parent":""},{"name":"restaurantPromotion","parent":"restaurantManagement"}]},{"name":"admin","rights":[{"name":"role","parent":"systemManagement"},{"name":"systemManagement","parent":""},{"name":"right","parent":"systemManagement"},{"name":"account","parent":"systemManagement"}]}]

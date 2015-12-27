@@ -21,7 +21,7 @@ import ms.zui.operation.datamodel.domain.Guest;
 public class GuestsController {
 	
     @RequestMapping(value="/guests", method=RequestMethod.GET)
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_MANAGER')")
     public Collection<Guest> guests(HttpSession session) {
     	return Application.guestService.getAllGuests();
     }
@@ -41,7 +41,7 @@ public class GuestsController {
     }
     
     @RequestMapping(value="/guests", method=RequestMethod.POST, consumes="application/json")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_MANAGER')")
     public ResponseEntity<Guest> createGuest(@RequestBody Guest guest) {
     	
     	HttpStatus httpStatus = HttpStatus.CREATED;
@@ -66,7 +66,7 @@ public class GuestsController {
     }
     
     @RequestMapping(value="/guests/{name}", method=RequestMethod.DELETE)
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_MANAGER')")
     public ResponseEntity<Guest> deleteGuest(@PathVariable String name) {
 
     	HttpStatus httpStatus = HttpStatus.OK;

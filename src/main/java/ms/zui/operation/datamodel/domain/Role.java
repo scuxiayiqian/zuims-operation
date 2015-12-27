@@ -1,6 +1,6 @@
 package ms.zui.operation.datamodel.domain;
 
-import org.springframework.security.core.authority.AuthorityUtils;
+import java.util.Collection;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;;
@@ -8,10 +8,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;;
 public class Role {
 	
 	private String name;
+	private Collection<Right> rights;
 	
 	@JsonCreator
-	public Role(@JsonProperty("name") String name) {
+	public Role(@JsonProperty("name") String name, @JsonProperty("rights") Collection<Right> rights) {
 		this.name = name;
+		this.rights = rights;
 	}
 	
 	public String getName() {
@@ -22,17 +24,16 @@ public class Role {
 		this.name = value;
 	}
 	
-	public String AuthorizationName() {
+	public Collection<Right> getRights() {
+		return this.rights;
+	}
+	
+	public void setRights(Collection<Right> value) {
+		this.rights = value;
+	}
+	
+	public String toAuthorizationName() {
 		
-		switch (this.name) {
-		case "admin": 
-			return "ROLE_ADMIN";
-		case "manager":
-			return "ROLE_MANAGER";
-		case "marketing":
-			return "ROLE_MARKETING";
-		default:
-			return "ROLE_MARKETING";
-		}
+		return "ROLE_" + this.name.toUpperCase();
 	}
 }
