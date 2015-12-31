@@ -11,6 +11,7 @@ import ms.zui.operation.service.RestaurantService;
 import ms.zui.operation.service.RightService;
 import ms.zui.operation.service.UserService;
 import ms.zui.operation.service.RoleService;
+import ms.zui.operation.service.ProductionService;
 
 @SpringBootApplication
 public class Application {
@@ -23,6 +24,7 @@ public class Application {
 	public static CityService cityService = new CityService();
 	public static RightService rightService = new RightService();
 	public static RoleService roleService = new RoleService();
+	public static ProductionService productionService = new ProductionService();
 	
 	public Application() {
 

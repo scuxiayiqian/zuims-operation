@@ -3,7 +3,7 @@ package ms.zui.operation.datamodel.domain;
 import java.util.Collection;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Role {
 	

@@ -25,11 +25,10 @@ import ms.zui.operation.datamodel.domain.User;
 public class UsersController {
 		
     @RequestMapping(value="/token", method=RequestMethod.DELETE)
-    public ResponseEntity<String> logout(HttpSession session) {
-    	String user = (String) session.getAttribute("user");
+    public HttpStatus logout(HttpSession session) {
     	session.invalidate();
 
-    	return new ResponseEntity<String>(user, HttpStatus.OK);
+    	return HttpStatus.OK;
     }
 
     @RequestMapping(value="/token", method=RequestMethod.GET)
