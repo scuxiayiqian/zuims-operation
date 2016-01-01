@@ -39,9 +39,9 @@ public class RightsController {
     	return new ResponseEntity<Right>(right, httpStatus);
     }
     
-    @RequestMapping(value="/rights", method=RequestMethod.POST, consumes="application/json")
+    @RequestMapping(value="/rights/{name}", method=RequestMethod.POST, consumes="application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Right> createRight(@RequestBody Right right) {
+    public ResponseEntity<Right> createRight(@RequestBody Right right, @PathVariable String name) {
     	
     	HttpStatus httpStatus = HttpStatus.CREATED;
     	
