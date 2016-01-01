@@ -39,7 +39,7 @@ public class ProductionsController {
 	}
 	
 	@RequestMapping(value="/productions", method=RequestMethod.POST, consumes="application/json")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_DIRECTOR')")
     public ResponseEntity<Production> createProduction(@RequestBody Production production) {
     	
     	HttpStatus httpStatus = HttpStatus.CREATED;
@@ -64,7 +64,7 @@ public class ProductionsController {
     }
 	
 	@RequestMapping(value="/productions/{name}", method=RequestMethod.DELETE)
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_DIRECTOR')")
     public ResponseEntity<Production> deleteProduction(@PathVariable String name) {
 
     	HttpStatus httpStatus = HttpStatus.OK;
