@@ -1,18 +1,38 @@
 package ms.zui.operation.datamodel.domain;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
+@Table(name="authorization")
 public class Right {
-	
+
+	@Id
+	@NotNull
+	@Column(name="id")
+	@GeneratedValue(generator="increment")
+	@GenericGenerator(name="increment", strategy="increment")
+	private long id;
+
+	@NotNull
+	@Column(name="name")
 	private String name;
-	//private String url;
-	private String parent;
 	
-	@JsonCreator
-	public Right(@JsonProperty("name") String name, @JsonProperty("parent") String parent) {
-		this.name = name;
-		this.parent = parent;
+	@Column(name="parent")
+	private String parent;
+		
+	public long getId() {
+		return this.id;
+	}
+	
+	public void setId(long id) {
+		this.id = id;
 	}
 	
 	public String getName() {
