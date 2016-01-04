@@ -1,21 +1,35 @@
 package ms.zui.operation.datamodel.domain;
 
-import java.util.Collection;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.GenericGenerator;
 
-import ms.zui.operation.datamodel.dto.RightDTO;
-
+@Entity
+@Table(name="role")
 public class Role {
 	
-	private String name;
-	private Collection<RightDTO> rights;
+	@Id
+	@NotNull
+	@Column(name="id")
+	@GeneratedValue(generator="increment")
+	@GenericGenerator(name="increment", strategy="increment")
+	private long id;
 	
-	@JsonCreator
-	public Role(@JsonProperty("name") String name, @JsonProperty("rights") Collection<RightDTO> rights) {
-		this.name = name;
-		this.rights = rights;
+	@NotNull
+	@Column(name="name")
+	private String name;
+	
+	public long getId() {
+	return this.id;
+	}
+	
+	public void setId(long id) {
+		this.id = id;
 	}
 	
 	public String getName() {
@@ -24,18 +38,5 @@ public class Role {
 	
 	public void setName(String value) {
 		this.name = value;
-	}
-	
-	public Collection<RightDTO> getRights() {
-		return this.rights;
-	}
-	
-	public void setRights(Collection<RightDTO> value) {
-		this.rights = value;
-	}
-	
-	public String toAuthorizationName() {
-		
-		return "ROLE_" + this.name.toUpperCase();
 	}
 }

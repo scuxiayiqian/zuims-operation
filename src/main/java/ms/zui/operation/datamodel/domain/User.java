@@ -1,27 +1,43 @@
 package ms.zui.operation.datamodel.domain;
 
-import java.util.Collection;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.GenericGenerator;
 
-
+@Entity
+@Table(name="account")
 public class User {
 	
+	@Id
+	@NotNull
+	@Column(name="id")
+	@GeneratedValue(generator="increment")
+	@GenericGenerator(name="increment", strategy="increment")
+	private long id;
+	
+	@NotNull
+	@Column(name="name")
 	private String name;
+
+	@NotNull
+	@Column(name="password")
 	private String password;
 	
-	/*
-	 * Roles: admin, manager, marketing
-	 */
-	private Collection<Role> roles;
+	public User() {
+		
+	}
 	
-	@JsonCreator
-	public User(@JsonProperty("name") String name, @JsonProperty("password") String password, @JsonProperty("roles")  Collection<Role> roles){
-		this.name = name;
-		this.password = password;
-		this.roles = roles;
+	public long getId() {
+		return this.id;
+	}
+	
+	public void setId(long id) {
+		this.id = id;
 	}
 	
 	public String getName(){
@@ -39,54 +55,4 @@ public class User {
 	public void setPassword(String value) {
 		this.password = value;
 	}	
-	
-	public Collection<Role> getRoles() {
-		return this.roles;
-	}
-	
-	//@JsonDeserialize(using = UserRolesDeserializer.class)
-	public void setRoles(Collection<Role> roles) {
-		this.roles = roles;
-	}
-	
-	@JsonIgnore
-	public boolean isAdmin() {
-		boolean isAdmin = false;
-		
-		for (Role role: roles) {
-			if (role.getName().equals("admin")) {
-				isAdmin = true;
-			}
-		}
-		return isAdmin;
-	}
-	
-	@JsonIgnore
-	public String[] getAuthorities() {
-		
-		String[] authorities = new String[roles.size()];
-		
-		int nIndex = 0;
-		for (Role role: roles) {
-			authorities[nIndex] = role.toAuthorizationName();
-			nIndex ++;
-		}
-		
-		return authorities;
-	}
-	
-	@JsonIgnore
-	public boolean hasRole(String role) {
-		
-		boolean flag = false;
-		
-		for (Role r: roles) {
-			if(role.equals(r.getName())) {
-				flag = true;
-				break;
-			}
-		}
-		
-		return flag;
-	}
 }

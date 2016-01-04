@@ -1,85 +1,118 @@
 package ms.zui.operation.service;
 
-import java.io.File;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import ms.zui.operation.Application;
-import ms.zui.operation.datamodel.domain.Role;;
+import ms.zui.operation.datamodel.dao.RightRepository;
+import ms.zui.operation.datamodel.dao.Role2RightRepository;
+import ms.zui.operation.datamodel.dao.RoleRepository;
+import ms.zui.operation.datamodel.domain.Right;
+import ms.zui.operation.datamodel.domain.Role;
+import ms.zui.operation.datamodel.domain.Role2Right;
+import ms.zui.operation.datamodel.dto.RightDTO;
+import ms.zui.operation.datamodel.dto.RoleDTO;
+import ms.zui.operation.util.ConvertTo;;
 
+@Service
 public class RoleService {
 
-	private HashMap<String, Role> 	repoRole;	
-	private ObjectMapper mapper = new ObjectMapper();
+	@Autowired
+	RoleRepository roleRepository;
 	
-	public RoleService() {
+	@Autowired
+	Role2RightRepository role2RightRepository;
+	
+	@Autowired
+	RightRepository rightRepository;
+	
+	private List<RightDTO> getRightsByRoleId(long roleId) {
 		
-		Role[] rights = null;
+		List<RightDTO> rightDTOs = new ArrayList<RightDTO>();
 		
-		try {
-			rights = mapper.readValue(new File(Application.dataPath + "role.json"), Role[].class);
+		List<Role2Right> role2Rights = this.role2RightRepository.findByRoleId(roleId);
+		
+		for(Role2Right role2Right: role2Rights) {
+			Right right = this.rightRepository.findOne(role2Right.getRightId());
+			Right parent = this.rightRepository.findOne(right.getParent());
+				
+			rightDTOs.add(ConvertTo.convertToRightDTO(right, parent));
+		}
+		
+		return rightDTOs;
+	}
+	
+	public RoleDTO getRoleById(long id) {
+		
+		Role role = this.roleRepository.findOne(id);
+				
+		return ConvertTo.convertToRoleDTO(role, getRightsByRoleId(id));
+	}
+	
+	public List<RoleDTO> getAllRoles() {
+		
+		List<RoleDTO> roleDTOs = new ArrayList<RoleDTO>();
+		
+		for(Role role: roleRepository.findAll()) {
 			
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			roleDTOs.add(ConvertTo.convertToRoleDTO(role, getRightsByRoleId(role.getId())));
 		}
-
-		repoRole = new HashMap<String, Role>();
 		
-		for (int nIndex = 0; nIndex < rights.length; nIndex++) {
-			repoRole.put(rights[nIndex].getName(), rights[nIndex]);
+		return roleDTOs;
+	}
+	
+	public RoleDTO createRole(RoleDTO roleDTO) {
+		
+		Role newRole = roleRepository.save(ConvertTo.convertToRole(roleDTO));
+		
+		for(RightDTO rightDTO: roleDTO.getRights()) {
+			
+			Role2Right role2Right = new Role2Right();
+			
+			role2Right.setRoleId(newRole.getId());
+			role2Right.setRightId(rightDTO.getId());
+			
+			this.role2RightRepository.save(role2Right);
 		}
+		
+		return ConvertTo.convertToRoleDTO(newRole, null);
 	}
 	
-	public Role getRoleByName(String name) {
+	public RoleDTO updateRole(RoleDTO roleDTO) {
 		
-		return repoRole.get(name);
+		Role newRole = roleRepository.save(ConvertTo.convertToRole(roleDTO));
+		
+		this.role2RightRepository.deleteByRoleId(roleDTO.getId());
+		
+		for(RightDTO rightDTO: roleDTO.getRights()) {
+			
+			Role2Right role2Right = new Role2Right();
+			
+			role2Right.setRoleId(newRole.getId());
+			role2Right.setRightId(rightDTO.getId());
+			
+			this.role2RightRepository.save(role2Right);
+		}
+		
+		return ConvertTo.convertToRoleDTO(newRole, null);
 	}
 	
-	public Collection<Role> getAllRoles() {
-		return repoRole.values();
-	}
-	
-	public Role createRole(Role role) {
+	public RoleDTO deleteRole(long id) {
 		
-		repoRole.put(role.getName(), role);
+		Role deletedRole = roleRepository.findOne(id);
 		
-	   	try {
-	   		mapper.writeValue(new File(Application.dataPath + "role.json"), repoRole.values());    		
-    	}
-    	catch (Exception e) {
-    		System.out.println(e.getMessage());
-    	}
- 
-		return role;
-	}
-	
-	public Role updateRole(Role role) {
+		if(deletedRole == null) {
+			return null;
+		}
 		
-		Role returnRole = repoRole.put(role.getName(), role);
+		RoleDTO deletedRoleDTO = ConvertTo.convertToRoleDTO(deletedRole, null);
 		
-	   	try {
-        	mapper.writeValue(new File(Application.dataPath + "role.json"), repoRole.values());    		
-    	}
-    	catch (Exception e) {
-    		System.out.println(e.getMessage());
-    	}
- 
-		return returnRole;
-	}
+		roleRepository.delete(id);
 
-	public Role deleteRole(String name) {
-		
-		Role returnRole = repoRole.remove(name);
-		
-	   	try {
-        	mapper.writeValue(new File(Application.dataPath + "role.json"), repoRole.values());    		
-    	}
-    	catch (Exception e) {
-    		System.out.println(e.getMessage());
-    	}
- 
-		return returnRole;
+		this.role2RightRepository.deleteByRoleId(id);
+
+		return deletedRoleDTO;		
 	}
 }
