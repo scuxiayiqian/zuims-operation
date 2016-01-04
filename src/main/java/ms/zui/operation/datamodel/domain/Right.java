@@ -25,7 +25,7 @@ public class Right {
 	private String name;
 	
 	@Column(name="parent")
-	private String parent;
+	private long parent;
 		
 	public long getId() {
 		return this.id;
@@ -43,11 +43,11 @@ public class Right {
 		this.name = value;
 	}
 	
-	public String getParent() {
+	public long getParent() {
 		return this.parent;
 	}
 	
-	public void setParent(String value) {
+	public void setParent(long value) {
 		this.parent = value;
 	}
 	

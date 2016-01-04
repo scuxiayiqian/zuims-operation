@@ -5,13 +5,15 @@ import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import ms.zui.operation.datamodel.dto.RightDTO;
+
 public class Role {
 	
 	private String name;
-	private Collection<Right> rights;
+	private Collection<RightDTO> rights;
 	
 	@JsonCreator
-	public Role(@JsonProperty("name") String name, @JsonProperty("rights") Collection<Right> rights) {
+	public Role(@JsonProperty("name") String name, @JsonProperty("rights") Collection<RightDTO> rights) {
 		this.name = name;
 		this.rights = rights;
 	}
@@ -24,11 +26,11 @@ public class Role {
 		this.name = value;
 	}
 	
-	public Collection<Right> getRights() {
+	public Collection<RightDTO> getRights() {
 		return this.rights;
 	}
 	
-	public void setRights(Collection<Right> value) {
+	public void setRights(Collection<RightDTO> value) {
 		this.rights = value;
 	}
 	
