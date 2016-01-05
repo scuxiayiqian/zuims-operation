@@ -19,7 +19,7 @@ import ms.zui.operation.service.RoleService;;
 
 
 @RestController
-public class RolesController {
+public class RolesController extends BaseController{
 	
 	@Autowired
 	RoleService roleService;
@@ -29,12 +29,12 @@ public class RolesController {
     	return roleService.getAllRoles();
     }
     
-    @RequestMapping(value="/roles/{id}", method=RequestMethod.GET)
-    public ResponseEntity<RoleDTO> getRoleByName(@PathVariable long id) {
+    @RequestMapping(value="/roles/{name}", method=RequestMethod.GET)
+    public ResponseEntity<RoleDTO> getRoleByName(@PathVariable String name) {
     	
     	HttpStatus httpStatus = HttpStatus.OK;
 
-    	RoleDTO roleDTO = roleService.getRoleById(id);
+    	RoleDTO roleDTO = roleService.getRoleByName(name);
     	
     	if (roleDTO == null) {
     		httpStatus = HttpStatus.NOT_FOUND;
@@ -43,9 +43,9 @@ public class RolesController {
     	return new ResponseEntity<RoleDTO>(roleDTO, httpStatus);
     }
     
-    @RequestMapping(value="/roles/{id}", method=RequestMethod.POST, consumes="application/json")
+    @RequestMapping(value="/roles/{name}", method=RequestMethod.POST, consumes="application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
-    public ResponseEntity<RoleDTO> createRole(@PathVariable long id, @RequestBody RoleDTO roleDTO) {
+    public ResponseEntity<RoleDTO> createRole(@PathVariable String name, @RequestBody RoleDTO roleDTO) {
     	
     	HttpStatus httpStatus = HttpStatus.CREATED;
     	
@@ -54,9 +54,9 @@ public class RolesController {
     	return new ResponseEntity<RoleDTO>(obj, httpStatus);
     }
     
-    @RequestMapping(value="/roles/{id}", method=RequestMethod.PUT, consumes="application/json")
+    @RequestMapping(value="/roles/{name}", method=RequestMethod.PUT, consumes="application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
-    public ResponseEntity<RoleDTO> updateRole(@PathVariable long id, @RequestBody RoleDTO roleDTO) {
+    public ResponseEntity<RoleDTO> updateRole(@PathVariable String name, @RequestBody RoleDTO roleDTO) {
 
     	HttpStatus httpStatus = HttpStatus.OK;
 
@@ -69,13 +69,13 @@ public class RolesController {
     	return new ResponseEntity<RoleDTO>(obj, httpStatus);
     }
     
-    @RequestMapping(value="/roles/{id}", method=RequestMethod.DELETE)
+    @RequestMapping(value="/roles/{name}", method=RequestMethod.DELETE)
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
-    public ResponseEntity<RoleDTO> deleteRole(@PathVariable long id) {
+    public ResponseEntity<RoleDTO> deleteRole(@PathVariable String name) {
 
     	HttpStatus httpStatus = HttpStatus.OK;
     	
-    	RoleDTO obj = roleService.deleteRole(id);
+    	RoleDTO obj = roleService.deleteRole(name);
     	
     	if (obj == null) {
     		httpStatus = HttpStatus.NOT_FOUND;

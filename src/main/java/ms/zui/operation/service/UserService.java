@@ -15,9 +15,10 @@ import ms.zui.operation.datamodel.dto.UserDTO;
 import ms.zui.operation.util.ConvertTo;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 @Service
-public class UserService {
+public class UserService extends BaseService{
 
 	@Autowired
 	UserRepository userRepository;
@@ -29,14 +30,15 @@ public class UserService {
 	User2RoleRepository user2RoleRepository;
 		
 	private List<RoleDTO> getRolesByUserId(long id) {
+		
 		List<RoleDTO> roles = new ArrayList<RoleDTO>();
-		
 		List<User2Role> user2Roles = this.user2RoleRepository.findByUserId(id);
-		
+
 		for(User2Role u: user2Roles) {
-			roles.add(this.roleService.getRoleById(u.getRoleId()));
+			
+			roles.add(this.roleService.getRoleByName(u.getRoleName()));
 		}
-		
+
 		return roles;
 	}
 	
@@ -57,15 +59,19 @@ public class UserService {
 		return ConvertTo.convertToUserDTO(user, getRolesByUserId(user.getId()));
 	}
 
-	public UserDTO getUserByName(String name) {
+	public UserDTO getUserDTOByName(String name) {
 		
 		UserDTO userDTO = null;
 		
+		System.out.println("getUserDTOByName: " + new Date().getTime());
+		
 		for(User user: userRepository.findByName(name)) {
 			
+			System.out.println("getUserDTOByName: " + new Date().getTime());
+
 			if(name.equals(user.getName())) {
 				userDTO = ConvertTo.convertToUserDTO(user, getRolesByUserId(user.getId()));
-				
+		
 				break;
 			}
 		}
@@ -73,9 +79,27 @@ public class UserService {
 		return userDTO;
 	}
 	
+	public User getUserByName(String name) {
+		
+		User result = null;
+		
+		for(User user: userRepository.findByName(name)) {
+			
+			if(name.equals(user.getName())) {
+				
+				result = user;
+				
+				break;
+			}
+		}
+
+		return result;
+	}
+	
+	
 	public List<UserDTO> getUsersByRoleName(String roleName) {
 		
-		Role role = this.roleService.getRoleByName(roleName);
+		RoleDTO role = this.roleService.getRoleByName(roleName);
 		
 		List<UserDTO> users = new ArrayList<UserDTO>();
 		
@@ -83,7 +107,7 @@ public class UserService {
 			return users;
 		}
 		
-		List<User2Role> user2Roles = this.user2RoleRepository.findByRoleId(role.getId());
+		List<User2Role> user2Roles = this.user2RoleRepository.findByRoleName(role.getName());
 		
 		for(User2Role user2Role: user2Roles) {
 			
@@ -101,7 +125,7 @@ public class UserService {
 			User2Role user2Role = new User2Role();
 			
 			user2Role.setUserId(newUser.getId());
-			user2Role.setRoleId(roleDTO.getId());
+			user2Role.setRoleName(roleDTO.getName());
 			
 			this.user2RoleRepository.save(user2Role);
 		}
@@ -120,7 +144,7 @@ public class UserService {
 			User2Role user2Role = new User2Role();
 			
 			user2Role.setUserId(newUser.getId());
-			user2Role.setRoleId(roleDTO.getId());
+			user2Role.setRoleName(roleDTO.getName());
 			
 			this.user2RoleRepository.save(user2Role);
 		}

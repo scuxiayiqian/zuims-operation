@@ -19,7 +19,7 @@ import ms.zui.operation.service.RightService;;
 
 
 @RestController
-public class RightsController {
+public class RightsController extends BaseController{
 	
 	@Autowired
 	RightService rightService;
@@ -29,12 +29,12 @@ public class RightsController {
     	return rightService.getRights();
     }
     
-    @RequestMapping(value="/rights/{id}", method=RequestMethod.GET)
-    public ResponseEntity<RightDTO> getRightByName(@PathVariable long id) {
+    @RequestMapping(value="/rights/{name}", method=RequestMethod.GET)
+    public ResponseEntity<RightDTO> getRightByName(@PathVariable String name) {
     	
     	HttpStatus httpStatus = HttpStatus.OK;
 
-    	RightDTO rightDTO = rightService.getRight(id);
+    	RightDTO rightDTO = rightService.getRight(name);
     	
     	if (rightDTO == null) {
     		httpStatus = HttpStatus.NOT_FOUND;
@@ -43,9 +43,9 @@ public class RightsController {
     	return new ResponseEntity<RightDTO>(rightDTO, httpStatus);
     }
     
-    @RequestMapping(value="/rights/{id}", method=RequestMethod.POST, consumes="application/json")
+    @RequestMapping(value="/rights/{name}", method=RequestMethod.POST, consumes="application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
-    public ResponseEntity<RightDTO> createRight(@RequestBody RightDTO rightDTO, @PathVariable long id) {
+    public ResponseEntity<RightDTO> createRight(@RequestBody RightDTO rightDTO, @PathVariable String name) {
     	
     	HttpStatus httpStatus = HttpStatus.CREATED;
     	
@@ -54,9 +54,9 @@ public class RightsController {
     	return new ResponseEntity<RightDTO>(obj, httpStatus);
     }
     
-    @RequestMapping(value="/rights/{id}", method=RequestMethod.PUT, consumes="application/json")
+    @RequestMapping(value="/rights/{name}", method=RequestMethod.PUT, consumes="application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
-    public ResponseEntity<RightDTO> updateRight(@PathVariable long id, @RequestBody RightDTO rightDTO) {
+    public ResponseEntity<RightDTO> updateRight(@PathVariable String name, @RequestBody RightDTO rightDTO) {
 
     	HttpStatus httpStatus = HttpStatus.OK;
 
@@ -69,13 +69,13 @@ public class RightsController {
     	return new ResponseEntity<RightDTO>(obj, httpStatus);
     }
     
-    @RequestMapping(value="/rights/{id}", method=RequestMethod.DELETE)
+    @RequestMapping(value="/rights/{name}", method=RequestMethod.DELETE)
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
-    public ResponseEntity<RightDTO> deleteRight(@PathVariable long id) {
+    public ResponseEntity<RightDTO> deleteRight(@PathVariable String name) {
 
     	HttpStatus httpStatus = HttpStatus.OK;
     	
-    	RightDTO obj = rightService.deleteRight(id);
+    	RightDTO obj = rightService.deleteRight(name);
     	
     	if (obj == null) {
     		httpStatus = HttpStatus.NOT_FOUND;

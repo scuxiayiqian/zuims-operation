@@ -18,7 +18,7 @@ import ms.zui.operation.datamodel.domain.Restaurant;
 
 
 @RestController
-public class RestaurantsController {
+public class RestaurantsController extends BaseController{
 	
     @RequestMapping(value="/restaurants", method=RequestMethod.GET)
     @PreAuthorize("hasRole('ROLE_MANAGER')")

@@ -6,20 +6,11 @@ import ms.zui.operation.datamodel.domain.Right;
 
 public class RoleDTO {
 
-	private long id;
 	private String name;
 	private List<RightDTO> rights;
 	
-	public long getId() {
-		return this.id;
-	}
-	
 	public RoleDTO() {
 		
-	}
-	
-	public void setId(long id) {
-		this.id = id;
 	}
 	
 	public String getName() {

@@ -17,7 +17,7 @@ import ms.zui.operation.Application;
 import ms.zui.operation.datamodel.domain.Production;
 
 @RestController
-public class ProductionsController {
+public class ProductionsController extends BaseController{
 	
 	@RequestMapping(value="/productions", method=RequestMethod.GET)
 	public Collection<Production> getProductions(HttpSession session) {

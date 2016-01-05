@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ms.zui.operation.Application;
 import ms.zui.operation.datamodel.domain.Guest;
 
-public class GuestService {
+public class GuestService extends BaseService{
 
 	private HashMap<String, Guest> 	repoGuest;	
 	private ObjectMapper mapper = new ObjectMapper();

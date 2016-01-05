@@ -14,8 +14,8 @@ public class User2Role {
 
 	@Id
 	@NotNull
-	@Column(name="roleid")
-	private long roleId;
+	@Column(name="roleName")
+	private String roleName;
 	
 	@Id
 	@NotNull
@@ -23,12 +23,12 @@ public class User2Role {
 	private long userId;
 	
 	
-	public long getRoleId() {
-		return roleId;
+	public String getRoleName() {
+		return roleName;
 	}
 	
-	public void setRoleId(long roleId) {
-		this.roleId = roleId;
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 	
 	public long getUserId() {
@@ -38,6 +38,4 @@ public class User2Role {
 	public void setUserId(long userId) {
 		this.userId = userId;
 	}
-	
-
 }

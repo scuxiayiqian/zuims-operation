@@ -18,7 +18,7 @@ import ms.zui.operation.datamodel.domain.City;
 
 
 @RestController
-public class CitiesController {
+public class CitiesController extends BaseController{
 	
     @RequestMapping(value="/cities", method=RequestMethod.GET)
     public Collection<City> getCities(HttpSession session) {

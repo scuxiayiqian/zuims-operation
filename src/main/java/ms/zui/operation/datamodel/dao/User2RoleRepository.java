@@ -13,7 +13,7 @@ import ms.zui.operation.datamodel.domain.User2Role;
 public interface User2RoleRepository extends CrudRepository<User2Role, Long>{
 	
 	List<User2Role> findByUserId(long userId);
-	List<User2Role> findByRoleId(long roleId);
+	List<User2Role> findByRoleName(String roleName);
 	
 	@Transactional
 	@Modifying

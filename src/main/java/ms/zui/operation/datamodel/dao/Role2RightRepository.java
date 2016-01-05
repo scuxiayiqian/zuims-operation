@@ -10,12 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ms.zui.operation.datamodel.domain.Role2Right;
 
-public interface Role2RightRepository extends CrudRepository<Role2Right, Long>{
+public interface Role2RightRepository extends CrudRepository<Role2Right, String>{
 	
-	List<Role2Right> findByRoleId(long roleId);
+	List<Role2Right> findByRoleName(String roleName);
 
 	@Transactional
 	@Modifying
-	@Query("delete from Role2Right r where r.roleId=:roleId")
-	int deleteByRoleId(@Param("roleId") long roleId);
+	@Query("delete from Role2Right r where r.roleName=:roleName")
+	int deleteByRoleName(@Param("roleName") String roleName);
 }

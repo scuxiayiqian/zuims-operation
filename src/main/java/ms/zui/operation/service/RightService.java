@@ -12,16 +12,16 @@ import ms.zui.operation.datamodel.dto.RightDTO;
 import ms.zui.operation.util.ConvertTo;;
 
 @Service
-public class RightService {
+public class RightService extends BaseService{
 
 	@Autowired
 	RightRepository rightRepository;
 	
-	public RightDTO getRight(long id) {
+	public RightDTO getRight(String name) {
 		
-		Right right = rightRepository.findOne(id);
+		Right right = rightRepository.findOne(name);
 				
-		return ConvertTo.convertToRightDTO(right, rightRepository.findOne(right.getParent()));
+		return ConvertTo.convertToRightDTO(right);
 	}
 	
 	public List<RightDTO> getRights() {
@@ -29,35 +29,19 @@ public class RightService {
 		ArrayList<RightDTO> rightDTOs = new ArrayList<RightDTO>();
 		
 		for(Right right: rightRepository.findAll()) {
-			rightDTOs.add(ConvertTo.convertToRightDTO(right, rightRepository.findOne(right.getParent())));
+			rightDTOs.add(ConvertTo.convertToRightDTO(right));
 		}
 		
 		return rightDTOs;
 	}
 	
-	public RightDTO getRightByName(String name) {
-		
-		RightDTO rightDTO = null;
-		
-		for(Right right: rightRepository.findByName(name)) {
-			
-			if(name.equals(right.getName())) {
-				rightDTO = ConvertTo.convertToRightDTO(right, rightRepository.findOne(right.getParent()));
-				
-				break;
-			}
-		}
-		
-		return rightDTO;
-	}
-		
 	public RightDTO createRight(RightDTO rightDTO) {
 		
-		Right result = rightRepository.save(ConvertTo.convertToRight(rightDTO, getRightByName(rightDTO.getParent())));
+		Right result = rightRepository.save(ConvertTo.convertToRight(rightDTO));
 		
 		if (result != null) {
 			
-			return ConvertTo.convertToRightDTO(result, rightRepository.findOne(result.getParent()));
+			return ConvertTo.convertToRightDTO(result);
 		}
 		else {
 			return null;
@@ -66,26 +50,27 @@ public class RightService {
 	
 	public RightDTO updateRight(RightDTO rightDTO) {
 		
-		Right right = ConvertTo.convertToRight(rightDTO, getRightByName(rightDTO.getParent()));
+		Right right = ConvertTo.convertToRight(rightDTO);
+		
 		Right result = rightRepository.save(right);
 		
 		if (result != null) {
-			return ConvertTo.convertToRightDTO(result, rightRepository.findOne(right.getParent()));
+			return ConvertTo.convertToRightDTO(result);
 		}
 		else {
 			return null;
 		}
 	}
 	
-	public RightDTO deleteRight(long id) {
-		Right right = rightRepository.findOne(id);
+	public RightDTO deleteRight(String name) {
+		Right right = rightRepository.findOne(name);
 		
 		if (right != null) {
 			
 			rightRepository.delete(right);
 
-			if (rightRepository.findOne(id) == null) {
-				return ConvertTo.convertToRightDTO(right, rightRepository.findOne(right.getParent()));
+			if (rightRepository.findOne(name) == null) {
+				return ConvertTo.convertToRightDTO(right);
 			}
 			else {
 				return null;

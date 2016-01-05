@@ -12,14 +12,12 @@ import ms.zui.operation.datamodel.dao.RoleRepository;
 import ms.zui.operation.datamodel.domain.Right;
 import ms.zui.operation.datamodel.domain.Role;
 import ms.zui.operation.datamodel.domain.Role2Right;
-import ms.zui.operation.datamodel.domain.User;
 import ms.zui.operation.datamodel.dto.RightDTO;
 import ms.zui.operation.datamodel.dto.RoleDTO;
-import ms.zui.operation.datamodel.dto.UserDTO;
 import ms.zui.operation.util.ConvertTo;;
 
 @Service
-public class RoleService {
+public class RoleService extends BaseService{
 
 	@Autowired
 	RoleRepository roleRepository;
@@ -30,53 +28,43 @@ public class RoleService {
 	@Autowired
 	RightRepository rightRepository;
 	
-	private List<RightDTO> getRightsByRoleId(long roleId) {
+	private List<RightDTO> getRightsByRoleName(String roleName) {
 		
 		List<RightDTO> rightDTOs = new ArrayList<RightDTO>();
 		
-		List<Role2Right> role2Rights = this.role2RightRepository.findByRoleId(roleId);
+		List<Role2Right> role2Rights = this.role2RightRepository.findByRoleName(roleName);
 		
 		for(Role2Right role2Right: role2Rights) {
-			Right right = this.rightRepository.findOne(role2Right.getRightId());
-			Right parent = this.rightRepository.findOne(right.getParent());
+			Right right = this.rightRepository.findOne(role2Right.getRightName());
 				
-			rightDTOs.add(ConvertTo.convertToRightDTO(right, parent));
+			rightDTOs.add(ConvertTo.convertToRightDTO(right));
 		}
 		
 		return rightDTOs;
 	}
 	
-	public RoleDTO getRoleById(long id) {
+	public RoleDTO getRoleByName(String name) {
 		
-		Role role = this.roleRepository.findOne(id);
-				
-		return ConvertTo.convertToRoleDTO(role, getRightsByRoleId(id));
+//		List<Role> roles = this.roleRepository.findByName(name);
+//		
+//		Role role = null;
+//		
+//		if(!roles.isEmpty()) {
+//			role = roles.get(0);
+//		}
+		
+		Role role = roleRepository.findOne(name);
+		
+		return ConvertTo.convertToRoleDTO(role, getRightsByRoleName(name));
 	}
 	
-	public Role getRoleByName(String name) {
-		
-		Role result = null;
-		
-		for(Role role: roleRepository.findByName(name)) {
-			
-			if(name.equals(role.getName())) {
-				
-				result = role;
-				
-				break;
-			}
-		}
-
-		return result;
-	}
-
 	public List<RoleDTO> getAllRoles() {
 		
 		List<RoleDTO> roleDTOs = new ArrayList<RoleDTO>();
 		
 		for(Role role: roleRepository.findAll()) {
 			
-			roleDTOs.add(ConvertTo.convertToRoleDTO(role, getRightsByRoleId(role.getId())));
+			roleDTOs.add(ConvertTo.convertToRoleDTO(role, getRightsByRoleName(role.getName())));
 		}
 		
 		return roleDTOs;
@@ -90,8 +78,8 @@ public class RoleService {
 			
 			Role2Right role2Right = new Role2Right();
 			
-			role2Right.setRoleId(newRole.getId());
-			role2Right.setRightId(rightDTO.getId());
+			role2Right.setRoleName(newRole.getName());
+			role2Right.setRightName(rightDTO.getName());
 			
 			this.role2RightRepository.save(role2Right);
 		}
@@ -103,34 +91,41 @@ public class RoleService {
 		
 		Role newRole = roleRepository.save(ConvertTo.convertToRole(roleDTO));
 		
-		this.role2RightRepository.deleteByRoleId(roleDTO.getId());
+		this.role2RightRepository.deleteByRoleName(roleDTO.getName());
 		
 		for(RightDTO rightDTO: roleDTO.getRights()) {
 			
 			Role2Right role2Right = new Role2Right();
 			
-			role2Right.setRoleId(newRole.getId());
-			role2Right.setRightId(rightDTO.getId());
+			role2Right.setRoleName(newRole.getName());
+			role2Right.setRightName(rightDTO.getName());
 			
 			this.role2RightRepository.save(role2Right);
 		}
 		
-		return ConvertTo.convertToRoleDTO(newRole, null);
+		return ConvertTo.convertToRoleDTO(newRole, getRightsByRoleName(newRole.getName()));
 	}
 	
-	public RoleDTO deleteRole(long id) {
+	public RoleDTO deleteRole(String name) {
 		
-		Role deletedRole = roleRepository.findOne(id);
+//		List<Role> roles = this.roleRepository.findByName(name);
+//		
+//		Role deletedRole = null;
+//		
+//		if(!roles.isEmpty()) {
+//			deletedRole = roles.get(0);
+//		}
+//		
+//		if(deletedRole == null) {
+//			return null;
+//		}
 		
-		if(deletedRole == null) {
-			return null;
-		}
+		Role deletedRole = roleRepository.findOne(name);
+		RoleDTO deletedRoleDTO = ConvertTo.convertToRoleDTO(deletedRole, getRightsByRoleName(deletedRole.getName()));
 		
-		RoleDTO deletedRoleDTO = ConvertTo.convertToRoleDTO(deletedRole, null);
-		
-		roleRepository.delete(id);
+		roleRepository.delete(name);
 
-		this.role2RightRepository.deleteByRoleId(id);
+		this.role2RightRepository.deleteByRoleName(name);
 
 		return deletedRoleDTO;		
 	}

@@ -14,28 +14,28 @@ public class Role2Right {
 
 	@Id
 	@NotNull
-	@Column(name="roleid")
-	private long roleId;
+	@Column(name="roleName")
+	private String roleName;
 	
 	@Id
 	@NotNull
-	@Column(name="rightid")
-	private long rightId;
+	@Column(name="rightName")
+	private String rightName;
 	
-	public long getRoleId() {
-		return roleId;
+	public String getRoleName() {
+		return roleName;
 	}
 	
-	public void setRoleId(long roleId) {
-		this.roleId = roleId;
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 	
-	public long getRightId() {
-		return this.rightId;
+	public String getRightName() {
+		return this.rightName;
 	}
 	
-	public void setRightId(long rightId) {
-		this.rightId = rightId;
+	public void setRightName(String rightName) {
+		this.rightName = rightName;
 	}
 	
 }

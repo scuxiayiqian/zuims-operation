@@ -6,7 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 
 import ms.zui.operation.datamodel.domain.Role;
 
-public interface RoleRepository extends CrudRepository<Role, Long>{
-	
-	List<Role> findByName(String name);
+public interface RoleRepository extends CrudRepository<Role, String>{
 }

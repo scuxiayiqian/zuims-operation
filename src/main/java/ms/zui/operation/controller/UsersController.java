@@ -23,7 +23,7 @@ import ms.zui.operation.service.UserService;
 
 
 @RestController
-public class UsersController {
+public class UsersController extends BaseController{
 		
 	@Autowired
 	UserService userService;
@@ -40,7 +40,7 @@ public class UsersController {
     	
     	HashMap<String, Object> map = new HashMap<String, Object>();
     	
-    	UserDTO userDTO = userService.getUserByName(SecurityContextHolder.getContext().getAuthentication().getName());
+    	UserDTO userDTO = userService.getUserDTOByName(SecurityContextHolder.getContext().getAuthentication().getName());
     	
     	map.put("user", userDTO);
     	map.put("token", session.getId());
@@ -53,7 +53,11 @@ public class UsersController {
     @RequestMapping(value="/users", method=RequestMethod.GET)
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
     public List<UserDTO> users(HttpSession session) {
-    	return userService.getAllUsers();
+    	
+    	
+    	List<UserDTO> userDTOs = userService.getAllUsers();
+    	
+    	return userDTOs;
     }
     
     @RequestMapping(value="/roles/{roleName}/users", method=RequestMethod.GET)

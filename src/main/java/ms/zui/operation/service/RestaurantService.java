@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import ms.zui.operation.Application;
 import ms.zui.operation.datamodel.domain.Restaurant;
 
-public class RestaurantService {
+public class RestaurantService extends BaseService{
 
 	private HashMap<String, Restaurant> 	repoRestaurant;	
 	private ObjectMapper mapper = new ObjectMapper();

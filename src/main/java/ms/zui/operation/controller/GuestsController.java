@@ -18,7 +18,7 @@ import ms.zui.operation.datamodel.domain.Guest;
 
 
 @RestController
-public class GuestsController {
+public class GuestsController extends BaseController{
 	
     @RequestMapping(value="/guests", method=RequestMethod.GET)
 	@PreAuthorize("hasRole('ROLE_MANAGER')")

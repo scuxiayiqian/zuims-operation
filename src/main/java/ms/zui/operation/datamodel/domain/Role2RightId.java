@@ -9,26 +9,26 @@ public class Role2RightId implements Serializable {
 	 */
 	private static final long serialVersionUID = 3645041767385966179L;
 	
-	private long roleId;
-	private long rightId;
+	private String roleName;
+	private String rightName;
 	
 	public Role2RightId() {
 		
 	}
 	
-	public long getRoleId() {
-		return this.roleId;
+	public String getRoleName() {
+		return this.roleName;
 	}
 	
-	public void setRoleId(long roleId) {
-		this.roleId = roleId;
+	public void setRoleName(String roleId) {
+		this.roleName = roleId;
 	}
 	
-	public long getRightId() {
-		return this.rightId;
+	public String getRightName() {
+		return this.rightName;
 	}
 	
-	public void setRightId(long rightId) {
-		this.rightId = rightId;
+	public void setRightName(String rightId) {
+		this.rightName = rightId;
 	}
 }

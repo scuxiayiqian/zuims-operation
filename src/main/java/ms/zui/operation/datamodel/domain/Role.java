@@ -15,22 +15,8 @@ public class Role {
 	
 	@Id
 	@NotNull
-	@Column(name="id")
-	@GeneratedValue(generator="increment")
-	@GenericGenerator(name="increment", strategy="increment")
-	private long id;
-	
-	@NotNull
 	@Column(name="name")
 	private String name;
-	
-	public long getId() {
-	return this.id;
-	}
-	
-	public void setId(long id) {
-		this.id = id;
-	}
 	
 	public String getName() {
 		return this.name;

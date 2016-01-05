@@ -1,6 +1,7 @@
 package ms.zui.operation.security;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,9 @@ public class OpsUserDetailService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-		UserDTO userDTO = userService.getUserByName(username);
+		UserDTO user = userService.getUserDTOByName(username);
 		
-		if(userDTO == null) {
+		if(user == null) {
 			throw new UsernameNotFoundException(String.format("User with the username %s doesn't exist", username));
 		}
 		
@@ -34,10 +35,14 @@ public class OpsUserDetailService implements UserDetailsService {
 		// Can't pass null authorities to user. Hence initialize with an empty arraylist
 		List<GrantedAuthority> authorities = new ArrayList<>();
 
-		authorities = AuthorityUtils.createAuthorityList(userDTO.getAuthorities());
-		
+		System.out.println("loadUserByUsername: " + new Date().getTime());
+
+		authorities = AuthorityUtils.createAuthorityList(user.getAuthorities());
+
+		System.out.println("loadUserByUsername: " + new Date().getTime());
+
 		// Create a UserDetails object from the data 
-		UserDetails userDetails = new org.springframework.security.core.userdetails.User(userDTO.getName(), userDTO.getPassword(), authorities);
+		UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), authorities);
 		
 		return userDetails;
 	}

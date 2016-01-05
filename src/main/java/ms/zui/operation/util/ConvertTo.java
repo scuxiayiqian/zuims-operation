@@ -12,36 +12,30 @@ import ms.zui.operation.datamodel.dto.UserDTO;
 
 public class ConvertTo {
 	
-	public static RightDTO convertToRightDTO(Right right, Right  parent) {
+	public static RightDTO convertToRightDTO(Right right) {
+		
+		if(right == null) {
+			return null;
+		}
+		
 		RightDTO rightDTO = new RightDTO();
 		
-		rightDTO.setId(right.getId());
 		rightDTO.setName(right.getName());
-		
-		if(parent != null) {
-			rightDTO.setParent(parent.getName());
-		}
-		else {
-			
-			rightDTO.setParent("");
-		}
-		
+		rightDTO.setParent(right.getParent());
+
 		return rightDTO;
 	}
 	
-	public static Right convertToRight(RightDTO rightDTO, RightDTO parent) {
+	public static Right convertToRight(RightDTO rightDTO) {
+		
+		if(rightDTO == null) {
+			return null;
+		}
+		
 		Right right = new Right();
 		
-		right.setId(rightDTO.getId());
 		right.setName(rightDTO.getName());
-		
-		if(parent != null) {
-			
-			right.setParent(parent.getId());
-		}
-		else {
-			right.setParent(-1);
-		}
+		right.setParent(rightDTO.getParent());
 		
 		return right;
 	}
@@ -54,7 +48,6 @@ public class ConvertTo {
 		
 		RoleDTO roleDTO = new RoleDTO();
 		
-		roleDTO.setId(role.getId());
 		roleDTO.setName(role.getName());
 		roleDTO.setRights(rightDTOs);
 				
@@ -62,11 +55,15 @@ public class ConvertTo {
 	}
 	
 	public static Role convertToRole(RoleDTO roleDTO) {
+
+		if(roleDTO == null) {
+			return null;
+		}
+		
 		Role role = new Role();
 		
-		role.setId(roleDTO.getId());
 		role.setName(roleDTO.getName());
-
+		
 		return role;
 	}
 
