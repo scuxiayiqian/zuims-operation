@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import ms.zui.operation.datamodel.dao.User2RoleRepository;
 import ms.zui.operation.datamodel.dao.UserRepository;
+import ms.zui.operation.datamodel.domain.Role;
 import ms.zui.operation.datamodel.domain.User;
 import ms.zui.operation.datamodel.domain.User2Role;
 import ms.zui.operation.datamodel.dto.RoleDTO;
@@ -70,6 +71,25 @@ public class UserService {
 		}
 
 		return userDTO;
+	}
+	
+	public List<UserDTO> getUsersByRoleName(String roleName) {
+		
+		Role role = this.roleService.getRoleByName(roleName);
+		
+		List<UserDTO> users = new ArrayList<UserDTO>();
+		
+		if(role == null) {
+			return users;
+		}
+		
+		List<User2Role> user2Roles = this.user2RoleRepository.findByRoleId(role.getId());
+		
+		for(User2Role user2Role: user2Roles) {
+			
+			users.add(ConvertTo.convertToUserDTO(this.userRepository.findOne(user2Role.getUserId()), getRolesByUserId(user2Role.getUserId())));
+		}
+		return users;
 	}
 	
 	public UserDTO createUser(UserDTO userDTO) {

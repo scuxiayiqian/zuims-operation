@@ -108,7 +108,7 @@ public class RestaurantsController {
     }
 
     @RequestMapping(value="/users/{name}/restaurants", method=RequestMethod.GET)
-    @PreAuthorize("hasRole('ROLE_MARKETING')")
+    @PreAuthorize("hasRole('ROLE_MARKETING') or hasRole('ROLE_MARKETING')")
     public Collection<Restaurant> getRestaurantsByMarketing(HttpSession session, @PathVariable String name) {
     	    	
     	return Application.restaurantService.getRestaurantsByMarketingName(name);

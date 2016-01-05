@@ -12,8 +12,10 @@ import ms.zui.operation.datamodel.dao.RoleRepository;
 import ms.zui.operation.datamodel.domain.Right;
 import ms.zui.operation.datamodel.domain.Role;
 import ms.zui.operation.datamodel.domain.Role2Right;
+import ms.zui.operation.datamodel.domain.User;
 import ms.zui.operation.datamodel.dto.RightDTO;
 import ms.zui.operation.datamodel.dto.RoleDTO;
+import ms.zui.operation.datamodel.dto.UserDTO;
 import ms.zui.operation.util.ConvertTo;;
 
 @Service
@@ -51,6 +53,23 @@ public class RoleService {
 		return ConvertTo.convertToRoleDTO(role, getRightsByRoleId(id));
 	}
 	
+	public Role getRoleByName(String name) {
+		
+		Role result = null;
+		
+		for(Role role: roleRepository.findByName(name)) {
+			
+			if(name.equals(role.getName())) {
+				
+				result = role;
+				
+				break;
+			}
+		}
+
+		return result;
+	}
+
 	public List<RoleDTO> getAllRoles() {
 		
 		List<RoleDTO> roleDTOs = new ArrayList<RoleDTO>();

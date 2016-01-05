@@ -44,7 +44,7 @@ public class RightsController {
     }
     
     @RequestMapping(value="/rights/{id}", method=RequestMethod.POST, consumes="application/json")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
     public ResponseEntity<RightDTO> createRight(@RequestBody RightDTO rightDTO, @PathVariable long id) {
     	
     	HttpStatus httpStatus = HttpStatus.CREATED;
@@ -55,6 +55,7 @@ public class RightsController {
     }
     
     @RequestMapping(value="/rights/{id}", method=RequestMethod.PUT, consumes="application/json")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
     public ResponseEntity<RightDTO> updateRight(@PathVariable long id, @RequestBody RightDTO rightDTO) {
 
     	HttpStatus httpStatus = HttpStatus.OK;
@@ -69,7 +70,7 @@ public class RightsController {
     }
     
     @RequestMapping(value="/rights/{id}", method=RequestMethod.DELETE)
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
     public ResponseEntity<RightDTO> deleteRight(@PathVariable long id) {
 
     	HttpStatus httpStatus = HttpStatus.OK;

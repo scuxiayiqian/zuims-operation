@@ -56,6 +56,13 @@ public class UsersController {
     	return userService.getAllUsers();
     }
     
+    @RequestMapping(value="/roles/{roleName}/users", method=RequestMethod.GET)
+	@PreAuthorize("hasRole('ROLE_DERICTOR') or hasRole('ROLE_SUPER') or hasRole('ROLE_MANAGER')")
+    public List<UserDTO> getUsersByRoldId(@PathVariable String roleName) {
+    	
+    	return userService.getUsersByRoleName(roleName);
+    }
+
     @RequestMapping(value="/users/{id}", method=RequestMethod.GET)
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
     public ResponseEntity<UserDTO> getUserById(@PathVariable long id) {
@@ -98,4 +105,6 @@ public class UsersController {
     	
     	return HttpStatus.OK;
     }
+    
+    
 }

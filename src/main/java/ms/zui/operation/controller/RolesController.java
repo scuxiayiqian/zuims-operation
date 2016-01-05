@@ -44,7 +44,7 @@ public class RolesController {
     }
     
     @RequestMapping(value="/roles/{id}", method=RequestMethod.POST, consumes="application/json")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
     public ResponseEntity<RoleDTO> createRole(@PathVariable long id, @RequestBody RoleDTO roleDTO) {
     	
     	HttpStatus httpStatus = HttpStatus.CREATED;
@@ -55,6 +55,7 @@ public class RolesController {
     }
     
     @RequestMapping(value="/roles/{id}", method=RequestMethod.PUT, consumes="application/json")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
     public ResponseEntity<RoleDTO> updateRole(@PathVariable long id, @RequestBody RoleDTO roleDTO) {
 
     	HttpStatus httpStatus = HttpStatus.OK;
@@ -69,7 +70,7 @@ public class RolesController {
     }
     
     @RequestMapping(value="/roles/{id}", method=RequestMethod.DELETE)
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
     public ResponseEntity<RoleDTO> deleteRole(@PathVariable long id) {
 
     	HttpStatus httpStatus = HttpStatus.OK;
