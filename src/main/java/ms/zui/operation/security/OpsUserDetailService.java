@@ -1,7 +1,6 @@
 package ms.zui.operation.security;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +34,7 @@ public class OpsUserDetailService implements UserDetailsService {
 		// Can't pass null authorities to user. Hence initialize with an empty arraylist
 		List<GrantedAuthority> authorities = new ArrayList<>();
 
-		System.out.println("loadUserByUsername: " + new Date().getTime());
-
 		authorities = AuthorityUtils.createAuthorityList(user.getAuthorities());
-
-		System.out.println("loadUserByUsername: " + new Date().getTime());
 
 		// Create a UserDetails object from the data 
 		UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), authorities);

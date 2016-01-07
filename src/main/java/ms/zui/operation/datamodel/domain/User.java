@@ -1,9 +1,15 @@
 package ms.zui.operation.datamodel.domain;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -27,6 +33,13 @@ public class User {
 	@NotNull
 	@Column(name="password")
 	private String password;
+	
+	@ManyToMany(fetch=FetchType.EAGER)
+	@JoinTable(name="account2role", 
+		joinColumns={@JoinColumn(name="accountid", referencedColumnName="id")},
+		inverseJoinColumns={@JoinColumn(name="roleName", referencedColumnName="name")}
+	)
+	private List<Role> roles;
 	
 	public User() {
 		
@@ -55,4 +68,12 @@ public class User {
 	public void setPassword(String value) {
 		this.password = value;
 	}	
+	
+	public List<Role> getRoles() {
+		return this.roles;
+	}
+	
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
 }

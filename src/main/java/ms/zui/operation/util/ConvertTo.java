@@ -40,7 +40,7 @@ public class ConvertTo {
 		return right;
 	}
 
-	public static RoleDTO convertToRoleDTO(Role role, List<RightDTO> rightDTOs) {
+	public static RoleDTO convertToRoleDTO(Role role) {
 		
 		if(role == null) {
 			return null;
@@ -49,6 +49,14 @@ public class ConvertTo {
 		RoleDTO roleDTO = new RoleDTO();
 		
 		roleDTO.setName(role.getName());
+		
+		ArrayList<RightDTO> rightDTOs = new ArrayList<RightDTO>();
+		
+		for(Right right: role.getRights()){
+			
+			rightDTOs.add(convertToRightDTO(right));
+		}
+		
 		roleDTO.setRights(rightDTOs);
 				
 		return roleDTO;
@@ -63,11 +71,19 @@ public class ConvertTo {
 		Role role = new Role();
 		
 		role.setName(roleDTO.getName());
+		ArrayList<Right> rights = new ArrayList<Right>();
+		
+		for(RightDTO rightDTO: roleDTO.getRights()){
+			
+			rights.add(convertToRight(rightDTO));
+		}
+		
+		role.setRights(rights);
 		
 		return role;
 	}
 
-	public static UserDTO convertToUserDTO(User user, List<RoleDTO> roleDTOs) {
+	public static UserDTO convertToUserDTO(User user) {
 		
 		if(user == null) {
 			return null;
@@ -78,6 +94,14 @@ public class ConvertTo {
 		userDTO.setId(user.getId());
 		userDTO.setName(user.getName());
 		userDTO.setPassword(user.getPassword());
+		
+		ArrayList<RoleDTO> roleDTOs = new ArrayList<RoleDTO>();
+		
+		for(Role role: user.getRoles()){
+			
+			roleDTOs.add(convertToRoleDTO(role));
+		}
+		
 		userDTO.setRoles(roleDTOs);
 				
 		return userDTO;
@@ -89,6 +113,15 @@ public class ConvertTo {
 		user.setId(userDTO.getId());
 		user.setName(userDTO.getName());
 		user.setPassword(userDTO.getPassword());
+
+		ArrayList<Role> roles = new ArrayList<Role>();
+		
+		for(RoleDTO roleDTO: userDTO.getRoles()){
+			
+			roles.add(convertToRole(roleDTO));
+		}
+		
+		user.setRoles(roles);
 
 		return user;
 	}

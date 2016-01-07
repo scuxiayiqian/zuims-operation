@@ -5,11 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ms.zui.operation.datamodel.dao.User2RoleRepository;
 import ms.zui.operation.datamodel.dao.UserRepository;
 import ms.zui.operation.datamodel.domain.Role;
 import ms.zui.operation.datamodel.domain.User;
-import ms.zui.operation.datamodel.domain.User2Role;
 import ms.zui.operation.datamodel.dto.RoleDTO;
 import ms.zui.operation.datamodel.dto.UserDTO;
 import ms.zui.operation.util.ConvertTo;
@@ -26,28 +24,12 @@ public class UserService extends BaseService{
 	@Autowired
 	RoleService roleService;
 	
-	@Autowired
-	User2RoleRepository user2RoleRepository;
-		
-	private List<RoleDTO> getRolesByUserId(long id) {
-		
-		List<RoleDTO> roles = new ArrayList<RoleDTO>();
-		List<User2Role> user2Roles = this.user2RoleRepository.findByUserId(id);
-
-		for(User2Role u: user2Roles) {
-			
-			roles.add(this.roleService.getRoleByName(u.getRoleName()));
-		}
-
-		return roles;
-	}
-	
 	public List<UserDTO> getAllUsers() {
 		
 		List<UserDTO> users = new ArrayList<UserDTO>();
 		
 		for(User user: this.userRepository.findAll()) {
-			users.add(ConvertTo.convertToUserDTO(user, getRolesByUserId(user.getId())));
+			users.add(ConvertTo.convertToUserDTO(user));
 		}
 		return users;
 	}
@@ -56,25 +38,27 @@ public class UserService extends BaseService{
 		
 		User user = this.userRepository.findOne(id);
 		
-		return ConvertTo.convertToUserDTO(user, getRolesByUserId(user.getId()));
+		return ConvertTo.convertToUserDTO(user);
 	}
 
 	public UserDTO getUserDTOByName(String name) {
 		
 		UserDTO userDTO = null;
 		
-		System.out.println("getUserDTOByName: " + new Date().getTime());
+		System.out.println("getUserDTOByName - start: " + new Date().getTime());
 		
 		for(User user: userRepository.findByName(name)) {
 			
-			System.out.println("getUserDTOByName: " + new Date().getTime());
+			System.out.println("getUserDTOByName - findByName: " + new Date().getTime());
 
 			if(name.equals(user.getName())) {
-				userDTO = ConvertTo.convertToUserDTO(user, getRolesByUserId(user.getId()));
+				userDTO = ConvertTo.convertToUserDTO(user);
 		
 				break;
 			}
 		}
+		
+		System.out.println("getUserDTOByName - getRolesByUserId: " + new Date().getTime());
 
 		return userDTO;
 	}
@@ -99,57 +83,29 @@ public class UserService extends BaseService{
 	
 	public List<UserDTO> getUsersByRoleName(String roleName) {
 		
-		RoleDTO role = this.roleService.getRoleByName(roleName);
+		List<User> users = this.userRepository.findByRoleName(roleName);
 		
-		List<UserDTO> users = new ArrayList<UserDTO>();
+		List<UserDTO> userDTOs = new ArrayList<UserDTO>();
 		
-		if(role == null) {
-			return users;
-		}
-		
-		List<User2Role> user2Roles = this.user2RoleRepository.findByRoleName(role.getName());
-		
-		for(User2Role user2Role: user2Roles) {
+		for(User user: users) {
 			
-			users.add(ConvertTo.convertToUserDTO(this.userRepository.findOne(user2Role.getUserId()), getRolesByUserId(user2Role.getUserId())));
+			userDTOs.add(ConvertTo.convertToUserDTO(user));
 		}
-		return users;
+		return userDTOs;
 	}
 	
 	public UserDTO createUser(UserDTO userDTO) {
 		
 		User newUser = this.userRepository.save(ConvertTo.convertToUser(userDTO));
-		
-		for(RoleDTO roleDTO: userDTO.getRoles()) {
-			
-			User2Role user2Role = new User2Role();
-			
-			user2Role.setUserId(newUser.getId());
-			user2Role.setRoleName(roleDTO.getName());
-			
-			this.user2RoleRepository.save(user2Role);
-		}
-		
-		return ConvertTo.convertToUserDTO(newUser, userDTO.getRoles());
+				
+		return ConvertTo.convertToUserDTO(newUser);
 	}
 	
 	public UserDTO updateUser(UserDTO userDTO) {
 		
 		User newUser = this.userRepository.save(ConvertTo.convertToUser(userDTO));
 		
-		this.user2RoleRepository.deleteByUserId(userDTO.getId());
-		
-		for(RoleDTO roleDTO: userDTO.getRoles()) {
-			
-			User2Role user2Role = new User2Role();
-			
-			user2Role.setUserId(newUser.getId());
-			user2Role.setRoleName(roleDTO.getName());
-			
-			this.user2RoleRepository.save(user2Role);
-		}
-		
-		return ConvertTo.convertToUserDTO(newUser, userDTO.getRoles());
+		return ConvertTo.convertToUserDTO(newUser);
 	}
 
 	public UserDTO deleteUser(long id) {
@@ -160,11 +116,9 @@ public class UserService extends BaseService{
 			return null;
 		}
 		
-		UserDTO deletedUserDTO = ConvertTo.convertToUserDTO(deletedUser, getRolesByUserId(id));
+		UserDTO deletedUserDTO = ConvertTo.convertToUserDTO(deletedUser);
 		
 		userRepository.delete(id);
-
-		this.user2RoleRepository.deleteByUserId(id);
 
 		return deletedUserDTO;		
 

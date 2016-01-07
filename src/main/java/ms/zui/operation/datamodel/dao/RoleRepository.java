@@ -1,6 +1,5 @@
 package ms.zui.operation.datamodel.dao;
 
-import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
