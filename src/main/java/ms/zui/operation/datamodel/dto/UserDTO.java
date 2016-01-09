@@ -2,9 +2,9 @@ package ms.zui.operation.datamodel.dto;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import ms.zui.operation.datamodel.domain.Role;
 
 public class UserDTO {
 	
@@ -12,10 +12,7 @@ public class UserDTO {
 	private String name;
 	private String password;
 	
-	/*
-	 * Roles: admin, manager, marketing
-	 */
-	private List<RoleDTO> roles;
+	private List<Role> roles;
 	
 	public UserDTO(){
 	}
@@ -44,25 +41,12 @@ public class UserDTO {
 		this.password = value;
 	}	
 	
-	public List<RoleDTO> getRoles() {
+	public List<Role> getRoles() {
 		return this.roles;
 	}
 	
-	//@JsonDeserialize(using = UserRolesDeserializer.class)
-	public void setRoles(List<RoleDTO> roles) {
+	public void setRoles(List<Role> roles) {
 		this.roles = roles;
-	}
-	
-	@JsonIgnore
-	public boolean isAdmin() {
-		boolean isAdmin = false;
-		
-		for (RoleDTO role: roles) {
-			if (role.getName().equals("admin")) {
-				isAdmin = true;
-			}
-		}
-		return isAdmin;
 	}
 	
 	@JsonIgnore
@@ -71,7 +55,7 @@ public class UserDTO {
 		String[] authorities = new String[roles.size()];
 		
 		int nIndex = 0;
-		for (RoleDTO role: roles) {
+		for (Role role: roles) {
 			authorities[nIndex] = role.toAuthorizationName();
 			nIndex ++;
 		}
@@ -84,7 +68,7 @@ public class UserDTO {
 		
 		boolean flag = false;
 		
-		for (RoleDTO r: roles) {
+		for (Role r: roles) {
 			if(role.equals(r.getName())) {
 				flag = true;
 				break;

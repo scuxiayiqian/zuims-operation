@@ -1,87 +1,47 @@
 package ms.zui.operation.service;
 
-import java.io.File;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.List;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import ms.zui.operation.Application;
+import ms.zui.operation.datamodel.dao.ProductionRepository;
 import ms.zui.operation.datamodel.domain.Production;
 
+@Service
 public class ProductionService extends BaseService{
 	
-	private HashMap<String, Production> repoProduction;
-	private ObjectMapper mapper = new ObjectMapper();
+	@Autowired
+	ProductionRepository productionRepository;
 	
-	public ProductionService() {
+	public Production getProductionById(long id) {
 		
-		Production[] productions = null;
-		
-		try {
-			productions = mapper.readValue(new File(Application.dataPath + "production.json"), Production[].class);
-			
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		
-		repoProduction = new HashMap<String, Production>();
-		
-		for (int nIndex = 0; nIndex < productions.length; nIndex++) {
-			repoProduction.put(productions[nIndex].getName(), productions[nIndex]);
-		}
-	
+		return this.productionRepository.findOne(id);
 	}
 	
-	public Production getProductionByName(String name) {
+	public List<Production> getAllProductions() {
 		
-		return repoProduction.get(name);
-	}
-	
-	public Collection<Production> getAllProductions() {
-		
-		return repoProduction.values();
+		return (List<Production>) this.productionRepository.findAll();
 	}
 	
 	public Production createProduction(Production production) {
 		
-		repoProduction.put(production.getName(), production);
-		
-		try {
-	   		mapper.writeValue(new File(Application.dataPath + "production.json"), repoProduction.values());    		
-    	}
-    	catch (Exception e) {
-    		System.out.println(e.getMessage());
-    	}
- 
-		return production;
+		return this.productionRepository.save(production);
 		
 	}
 	
 	public Production updateProduction(Production production) {
 		
-		Production returnProduction = repoProduction.put(production.getName(), production);
-		
-		try {
-			mapper.writeValue(new File(Application.dataPath + "production.json"), repoProduction.values());
-		} catch (Exception e) {
-    		System.out.println(e.getMessage());
-    	}
- 
-		return returnProduction;
+		return this.productionRepository.save(production);
 	}
 	
-	public Production deletProduction(String name) {
+	public Production deletProduction(long id) {
 
-		Production returnProduction = repoProduction.remove(name);
+		Production deletedProduction = this.productionRepository.findOne(id);
 		
-		try {
-			mapper.writeValue(new File(Application.dataPath + "production.json"), repoProduction.values());
-		} catch (Exception e) {
-    		System.out.println(e.getMessage());
-    	}
- 
-		return returnProduction;
+		this.productionRepository.delete(id);
+
+		return deletedProduction;		
 	}
 	
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import ms.zui.operation.datamodel.dto.RoleDTO;
+import ms.zui.operation.datamodel.domain.Role;
 import ms.zui.operation.service.RoleService;;
 
 
@@ -25,62 +25,62 @@ public class RolesController extends BaseController{
 	RoleService roleService;
 	
     @RequestMapping(value="/roles", method=RequestMethod.GET)
-    public List<RoleDTO> getRoles(HttpSession session) {
+    public List<Role> getRoles(HttpSession session) {
     	return roleService.getAllRoles();
     }
     
-    @RequestMapping(value="/roles/{name}", method=RequestMethod.GET)
-    public ResponseEntity<RoleDTO> getRoleByName(@PathVariable String name) {
+    @RequestMapping(value="/roles/{id}", method=RequestMethod.GET)
+    public ResponseEntity<Role> getRoleByName(@PathVariable long id) {
     	
     	HttpStatus httpStatus = HttpStatus.OK;
 
-    	RoleDTO roleDTO = roleService.getRoleByName(name);
+    	Role role = roleService.getRoleByName(id);
     	
-    	if (roleDTO == null) {
+    	if (role == null) {
     		httpStatus = HttpStatus.NOT_FOUND;
     	}
     	
-    	return new ResponseEntity<RoleDTO>(roleDTO, httpStatus);
+    	return new ResponseEntity<Role>(role, httpStatus);
     }
     
     @RequestMapping(value="/roles/{name}", method=RequestMethod.POST, consumes="application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
-    public ResponseEntity<RoleDTO> createRole(@PathVariable String name, @RequestBody RoleDTO roleDTO) {
+    public ResponseEntity<Role> createRole(@PathVariable String name, @RequestBody Role role) {
     	
     	HttpStatus httpStatus = HttpStatus.CREATED;
     	
-    	RoleDTO obj = roleService.createRole(roleDTO);
+    	Role obj = roleService.createRole(role);
     	
-    	return new ResponseEntity<RoleDTO>(obj, httpStatus);
+    	return new ResponseEntity<Role>(obj, httpStatus);
     }
     
     @RequestMapping(value="/roles/{name}", method=RequestMethod.PUT, consumes="application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
-    public ResponseEntity<RoleDTO> updateRole(@PathVariable String name, @RequestBody RoleDTO roleDTO) {
+    public ResponseEntity<Role> updateRole(@PathVariable String name, @RequestBody Role role) {
 
     	HttpStatus httpStatus = HttpStatus.OK;
 
-    	RoleDTO obj = roleService.updateRole(roleDTO);
+    	Role obj = roleService.updateRole(role);
     	
     	if (obj == null) {
     		httpStatus = HttpStatus.NOT_FOUND;
     	}
     	    	
-    	return new ResponseEntity<RoleDTO>(obj, httpStatus);
+    	return new ResponseEntity<Role>(obj, httpStatus);
     }
     
-    @RequestMapping(value="/roles/{name}", method=RequestMethod.DELETE)
+    @RequestMapping(value="/roles/{id}", method=RequestMethod.DELETE)
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
-    public ResponseEntity<RoleDTO> deleteRole(@PathVariable String name) {
+    public ResponseEntity<Role> deleteRole(@PathVariable long id) {
 
     	HttpStatus httpStatus = HttpStatus.OK;
     	
-    	RoleDTO obj = roleService.deleteRole(name);
+    	Role obj = roleService.deleteRole(id);
     	
     	if (obj == null) {
     		httpStatus = HttpStatus.NOT_FOUND;
     	}
     	
-    	return new ResponseEntity<RoleDTO>(obj, httpStatus);
+    	return new ResponseEntity<Role>(obj, httpStatus);
     }
 }

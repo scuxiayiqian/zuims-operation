@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import ms.zui.operation.datamodel.domain.Right;
 
-public interface RightRepository extends CrudRepository<Right, String>{
+public interface RightRepository extends CrudRepository<Right, Long>{
 	
 }

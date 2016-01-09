@@ -1,6 +1,5 @@
 package ms.zui.operation.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +8,6 @@ import org.springframework.stereotype.Service;
 import ms.zui.operation.datamodel.dao.RightRepository;
 import ms.zui.operation.datamodel.dao.RoleRepository;
 import ms.zui.operation.datamodel.domain.Role;
-import ms.zui.operation.datamodel.dto.RoleDTO;
-import ms.zui.operation.util.ConvertTo;;
 
 @Service
 public class RoleService extends BaseService{
@@ -21,46 +18,32 @@ public class RoleService extends BaseService{
 	@Autowired
 	RightRepository rightRepository;
 	
-	public RoleDTO getRoleByName(String name) {
+	public Role getRoleByName(long id) {
 		
-		Role role = roleRepository.findOne(name);
-		
-		return ConvertTo.convertToRoleDTO(role);
+		return roleRepository.findOne(id);
 	}
 	
-	public List<RoleDTO> getAllRoles() {
+	public List<Role> getAllRoles() {
 		
-		List<RoleDTO> roleDTOs = new ArrayList<RoleDTO>();
-		
-		for(Role role: roleRepository.findAll()) {
-			
-			roleDTOs.add(ConvertTo.convertToRoleDTO(role));
-		}
-		
-		return roleDTOs;
+		return (List<Role>) this.roleRepository.findAll();
 	}
 	
-	public RoleDTO createRole(RoleDTO roleDTO) {
+	public Role createRole(Role role) {
 		
-		Role newRole = roleRepository.save(ConvertTo.convertToRole(roleDTO));
+		return this.roleRepository.save(role);
+	}
+	
+	public Role updateRole(Role role) {
+		
+		return this.roleRepository.save(role);
+	}
+	
+	public Role deleteRole(long id) {
+		
+		Role deletedRole = roleRepository.findOne(id);
 				
-		return ConvertTo.convertToRoleDTO(newRole);
-	}
-	
-	public RoleDTO updateRole(RoleDTO roleDTO) {
-		
-		Role newRole = roleRepository.save(ConvertTo.convertToRole(roleDTO));
-				
-		return ConvertTo.convertToRoleDTO(newRole);
-	}
-	
-	public RoleDTO deleteRole(String name) {
-		
-		Role deletedRole = roleRepository.findOne(name);
-		RoleDTO deletedRoleDTO = ConvertTo.convertToRoleDTO(deletedRole);
-		
-		roleRepository.delete(name);
+		roleRepository.delete(id);
 
-		return deletedRoleDTO;		
+		return deletedRole;		
 	}
 }

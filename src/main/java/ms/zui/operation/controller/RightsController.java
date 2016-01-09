@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import ms.zui.operation.datamodel.dto.RightDTO;
+import ms.zui.operation.datamodel.domain.Right;
 import ms.zui.operation.service.RightService;;
 
 
@@ -25,62 +25,62 @@ public class RightsController extends BaseController{
 	RightService rightService;
 	
     @RequestMapping(value="/rights", method=RequestMethod.GET)
-    public List<RightDTO> getRights(HttpSession session) {
+    public List<Right> getRights(HttpSession session) {
     	return rightService.getRights();
     }
     
-    @RequestMapping(value="/rights/{name}", method=RequestMethod.GET)
-    public ResponseEntity<RightDTO> getRightByName(@PathVariable String name) {
+    @RequestMapping(value="/rights/{id}", method=RequestMethod.GET)
+    public ResponseEntity<Right> getRightByName(@PathVariable long id) {
     	
     	HttpStatus httpStatus = HttpStatus.OK;
 
-    	RightDTO rightDTO = rightService.getRight(name);
+    	Right right = rightService.getRight(id);
     	
-    	if (rightDTO == null) {
+    	if (right == null) {
     		httpStatus = HttpStatus.NOT_FOUND;
     	}
     	
-    	return new ResponseEntity<RightDTO>(rightDTO, httpStatus);
+    	return new ResponseEntity<Right>(right, httpStatus);
     }
     
     @RequestMapping(value="/rights/{name}", method=RequestMethod.POST, consumes="application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
-    public ResponseEntity<RightDTO> createRight(@RequestBody RightDTO rightDTO, @PathVariable String name) {
+    public ResponseEntity<Right> createRight(@RequestBody Right right, @PathVariable String name) {
     	
     	HttpStatus httpStatus = HttpStatus.CREATED;
     	
-    	RightDTO obj = rightService.createRight(rightDTO);
+    	Right obj = rightService.createRight(right);
     	
-    	return new ResponseEntity<RightDTO>(obj, httpStatus);
+    	return new ResponseEntity<Right>(obj, httpStatus);
     }
     
     @RequestMapping(value="/rights/{name}", method=RequestMethod.PUT, consumes="application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
-    public ResponseEntity<RightDTO> updateRight(@PathVariable String name, @RequestBody RightDTO rightDTO) {
+    public ResponseEntity<Right> updateRight(@PathVariable String name, @RequestBody Right right) {
 
     	HttpStatus httpStatus = HttpStatus.OK;
 
-    	RightDTO obj = rightService.updateRight(rightDTO);
+    	Right obj = rightService.updateRight(right);
     	
     	if (obj == null) {
     		httpStatus = HttpStatus.NOT_FOUND;
     	}
     	    	
-    	return new ResponseEntity<RightDTO>(obj, httpStatus);
+    	return new ResponseEntity<Right>(obj, httpStatus);
     }
     
-    @RequestMapping(value="/rights/{name}", method=RequestMethod.DELETE)
+    @RequestMapping(value="/rights/{id}", method=RequestMethod.DELETE)
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
-    public ResponseEntity<RightDTO> deleteRight(@PathVariable String name) {
+    public ResponseEntity<Right> deleteRight(@PathVariable long id) {
 
     	HttpStatus httpStatus = HttpStatus.OK;
     	
-    	RightDTO obj = rightService.deleteRight(name);
+    	Right obj = rightService.deleteRight(id);
     	
     	if (obj == null) {
     		httpStatus = HttpStatus.NOT_FOUND;
     	}
     	
-    	return new ResponseEntity<RightDTO>(obj, httpStatus);
+    	return new ResponseEntity<Right>(obj, httpStatus);
     }
 }

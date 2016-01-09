@@ -1,1 +1,0 @@
-[{"name":"Admin","password":"incongruous","roles":[{"name":"admin","rights":[{"name":"role","parent":1},{"name":"systemManagement","parent":""},{"name":"right","parent":1},{"name":"account","parent":1}]}]}]

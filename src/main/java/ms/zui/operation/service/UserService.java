@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ms.zui.operation.datamodel.dao.UserRepository;
-import ms.zui.operation.datamodel.domain.Role;
 import ms.zui.operation.datamodel.domain.User;
-import ms.zui.operation.datamodel.dto.RoleDTO;
 import ms.zui.operation.datamodel.dto.UserDTO;
 import ms.zui.operation.util.ConvertTo;
 

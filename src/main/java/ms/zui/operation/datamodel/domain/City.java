@@ -1,19 +1,30 @@
 package ms.zui.operation.datamodel.domain;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
+@Entity
+@Table(name="city")
 public class City {
 	
+	@Id
+	@NotNull
+	@Column(name="name")
 	private String name;
+	
+	@Column(name="longitude")	
 	private double longitude;
+	
+	@Column(name="latitude")
 	private double latitude;
 	
-	@JsonCreator
-	public City(@JsonProperty("name") String name, @JsonProperty("longitude") double longitude, @JsonProperty("latitude") double latitude) {
-		this.name = name;
-		this.longitude = longitude;
-		this.latitude = latitude;
+	public City() {
+		this.name = "";
+		this.longitude = 0.0;
+		this.latitude = 0.0;
 	}
 	
 	public String getName() {
