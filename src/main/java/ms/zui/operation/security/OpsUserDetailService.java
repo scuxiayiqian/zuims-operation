@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import ms.zui.operation.datamodel.dto.UserDTO;
+import ms.zui.operation.datamodel.domain.User;
 import ms.zui.operation.service.UserService;
 
 
@@ -24,7 +24,7 @@ public class OpsUserDetailService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-		UserDTO user = userService.getUserDTOByName(username);
+		User user = userService.getUserByName(username);
 		
 		if(user == null) {
 			throw new UsernameNotFoundException(String.format("User with the username %s doesn't exist", username));

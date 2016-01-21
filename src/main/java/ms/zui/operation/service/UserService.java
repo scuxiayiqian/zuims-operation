@@ -38,7 +38,7 @@ public class UserService extends BaseService{
 		
 		return ConvertTo.convertToUserDTO(user);
 	}
-
+	
 	public UserDTO getUserDTOByName(String name) {
 		
 		UserDTO userDTO = null;

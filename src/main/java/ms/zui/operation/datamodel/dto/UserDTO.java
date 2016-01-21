@@ -10,8 +10,11 @@ public class UserDTO {
 	
 	private long id;
 	private String name;
-	private String password;
-	
+	private String mobile;
+	private String fullname;
+	private String wx;
+	private String qq;
+	private String email;
 	private List<Role> roles;
 	
 	public UserDTO(){
@@ -33,13 +36,45 @@ public class UserDTO {
 		this.name = value;
 	}
 	
-	public String getPassword() {
-		return password;
+	public String getFullname(){
+		return this.fullname;
 	}
 	
-	public void setPassword(String value) {
-		this.password = value;
+	public void setFullname(String value) {
+		this.fullname = value;
+	}
+
+	public String getMobile() {
+		return this.mobile;
+	}
+	
+	public void setMobile(String value) {
+		this.mobile = value;
 	}	
+	
+	public String getEmail(){
+		return this.email;
+	}
+	
+	public void setEmail(String value) {
+		this.email = value;
+	}
+	
+	public String getQq(){
+		return this.qq;
+	}
+	
+	public void setQq(String value) {
+		this.qq = value;
+	}
+	
+	public String getWx(){
+		return this.wx;
+	}
+	
+	public void setWx(String value) {
+		this.wx = value;
+	}
 	
 	public List<Role> getRoles() {
 		return this.roles;
