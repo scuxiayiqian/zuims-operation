@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import ms.zui.operation.datamodel.domain.User;
 import ms.zui.operation.service.UserService;
 
-
 @Component
 public class OpsUserDetailService implements UserDetailsService {
 

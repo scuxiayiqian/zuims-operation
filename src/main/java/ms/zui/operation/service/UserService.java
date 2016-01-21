@@ -11,7 +11,6 @@ import ms.zui.operation.datamodel.dto.UserDTO;
 import ms.zui.operation.util.ConvertTo;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 @Service
 public class UserService extends BaseService{
@@ -43,20 +42,14 @@ public class UserService extends BaseService{
 		
 		UserDTO userDTO = null;
 		
-		System.out.println("getUserDTOByName - start: " + new Date().getTime());
-		
 		for(User user: userRepository.findByName(name)) {
 			
-			System.out.println("getUserDTOByName - findByName: " + new Date().getTime());
-
 			if(name.equals(user.getName())) {
 				userDTO = ConvertTo.convertToUserDTO(user);
 		
 				break;
 			}
 		}
-		
-		System.out.println("getUserDTOByName - getRolesByUserId: " + new Date().getTime());
 
 		return userDTO;
 	}
@@ -106,6 +99,17 @@ public class UserService extends BaseService{
 		return ConvertTo.convertToUserDTO(newUser);
 	}
 
+	public boolean changePassword(long id, String password) {
+		
+		User user = userRepository.findOne(id);
+		
+		user.setPassword(password);
+		
+		user = userRepository.save(user);
+		
+		return user != null;
+	}
+	
 	public UserDTO deleteUser(long id) {
 		
 		User deletedUser = userRepository.findOne(id);

@@ -93,7 +93,7 @@ public class UsersController extends BaseController{
     }
     
     @RequestMapping(value="/users/{id}", method=RequestMethod.PUT, consumes="application/json")
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER') or @userService.getUserById(#id).getName() == authentication.name")
     public UserDTO updateUser(@PathVariable long id, @RequestBody UserDTO userDTO) {
 
     	UserDTO obj = userService.updateUser(userDTO);
@@ -101,6 +101,13 @@ public class UsersController extends BaseController{
     	return obj;
     }
     
+    @RequestMapping(value="/users/{id}/pwd", method=RequestMethod.PUT, consumes="application/json")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER') or @userService.getUserById(#id).getName() == authentication.name")
+    public boolean changePassword(@PathVariable long id, @RequestBody String password) {
+    	
+    	return userService.changePassword(id, password);
+    }
+
     @RequestMapping(value="/users/{id}", method=RequestMethod.DELETE)
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
     public HttpStatus deleteUser(@PathVariable long id) {
