@@ -21,12 +21,15 @@ public class UserService extends BaseService{
 	@Autowired
 	RoleService roleService;
 	
+	@Autowired
+	ConvertTo converter;
+	
 	public List<UserDTO> getAllUsers() {
 		
 		List<UserDTO> users = new ArrayList<UserDTO>();
 		
 		for(User user: this.userRepository.findAll()) {
-			users.add(ConvertTo.convertToUserDTO(user));
+			users.add(converter.convertToUserDTO(user));
 		}
 		return users;
 	}
@@ -35,7 +38,7 @@ public class UserService extends BaseService{
 		
 		User user = this.userRepository.findOne(id);
 		
-		return ConvertTo.convertToUserDTO(user);
+		return converter.convertToUserDTO(user);
 	}
 	
 	public UserDTO getUserDTOByName(String name) {
@@ -45,7 +48,7 @@ public class UserService extends BaseService{
 		for(User user: userRepository.findByName(name)) {
 			
 			if(name.equals(user.getName())) {
-				userDTO = ConvertTo.convertToUserDTO(user);
+				userDTO = converter.convertToUserDTO(user);
 		
 				break;
 			}
@@ -80,23 +83,23 @@ public class UserService extends BaseService{
 		
 		for(User user: users) {
 			
-			userDTOs.add(ConvertTo.convertToUserDTO(user));
+			userDTOs.add(converter.convertToUserDTO(user));
 		}
 		return userDTOs;
 	}
 	
 	public UserDTO createUser(UserDTO userDTO) {
 		
-		User newUser = this.userRepository.save(ConvertTo.convertToUser(userDTO));
+		User newUser = this.userRepository.save(converter.convertToUser(userDTO));
 				
-		return ConvertTo.convertToUserDTO(newUser);
+		return converter.convertToUserDTO(newUser);
 	}
 	
 	public UserDTO updateUser(UserDTO userDTO) {
 		
-		User newUser = this.userRepository.save(ConvertTo.convertToUser(userDTO));
+		User newUser = this.userRepository.save(converter.convertToUser(userDTO));
 		
-		return ConvertTo.convertToUserDTO(newUser);
+		return converter.convertToUserDTO(newUser);
 	}
 
 	public boolean changePassword(long id, String password) {
@@ -118,7 +121,7 @@ public class UserService extends BaseService{
 			return null;
 		}
 		
-		UserDTO deletedUserDTO = ConvertTo.convertToUserDTO(deletedUser);
+		UserDTO deletedUserDTO = converter.convertToUserDTO(deletedUser);
 		
 		userRepository.delete(id);
 

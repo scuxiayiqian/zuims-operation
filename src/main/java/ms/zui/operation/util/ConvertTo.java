@@ -1,17 +1,19 @@
 package ms.zui.operation.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import ms.zui.operation.datamodel.dao.UserRepository;
 import ms.zui.operation.datamodel.domain.User;
 import ms.zui.operation.datamodel.dto.UserDTO;
 
+@Service
 public class ConvertTo {
 	
 	@Autowired
-	static UserRepository userRepository;
+	UserRepository userRepository;
 	
-	public static UserDTO convertToUserDTO(User user) {
+	public UserDTO convertToUserDTO(User user) {
 		
 		if(user == null) {
 			return null;
@@ -31,7 +33,7 @@ public class ConvertTo {
 		return userDTO;
 	}
 	
-	public static User convertToUser(UserDTO userDTO) {
+	public User convertToUser(UserDTO userDTO) {
 
 		User user = userRepository.findOne(userDTO.getId());
 		
