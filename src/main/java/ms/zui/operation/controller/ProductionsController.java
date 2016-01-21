@@ -80,5 +80,4 @@ public class ProductionsController extends BaseController{
     	
     	return new ResponseEntity<Production>(obj, httpStatus);
     }
-
 }
