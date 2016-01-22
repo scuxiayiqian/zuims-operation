@@ -67,6 +67,12 @@ public class UsersController extends BaseController{
     	
     	return userService.getUsersByRoleName(roleName);
     }
+    
+    @RequestMapping(value="/users/marketing", method=RequestMethod.GET)
+    public List<UserDTO> getMarketingUsers() {
+    	
+    	return userService.getUsersByRoleName("marketing");
+    }
 
     @RequestMapping(value="/users/{id}", method=RequestMethod.GET)
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
