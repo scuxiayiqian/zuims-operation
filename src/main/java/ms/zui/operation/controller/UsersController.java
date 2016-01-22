@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import ms.zui.operation.controller.parameter.ChangePasswordParameter;
 import ms.zui.operation.datamodel.dto.UserDTO;
 import ms.zui.operation.service.UserService;
 
@@ -103,9 +104,9 @@ public class UsersController extends BaseController{
     
     @RequestMapping(value="/users/{id}/pwd", method=RequestMethod.PUT, consumes="application/json")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER') or @userService.getUserById(#id).getName() == authentication.name")
-    public boolean changePassword(@PathVariable long id, @RequestBody String password) {
+    public boolean changePassword(@PathVariable long id, @RequestBody ChangePasswordParameter pwdParameter) {
     	
-    	return userService.changePassword(id, password);
+    	return userService.changePassword(id, pwdParameter.getOldPassword(), pwdParameter.getNewPassword());
     }
 
     @RequestMapping(value="/users/{id}", method=RequestMethod.DELETE)

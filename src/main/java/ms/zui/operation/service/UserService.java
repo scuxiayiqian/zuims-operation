@@ -102,13 +102,19 @@ public class UserService extends BaseService{
 		return converter.convertToUserDTO(newUser);
 	}
 
-	public boolean changePassword(long id, String password) {
+	public boolean changePassword(long id, String oldPassword, String newPassword) {
 		
 		User user = userRepository.findOne(id);
 		
-		user.setPassword(password);
-		
-		user = userRepository.save(user);
+		if (oldPassword.equals(user.getPassword())) {
+			
+			user.setPassword(newPassword);
+			
+			user = userRepository.save(user);
+		}
+		else {
+			user = null;
+		}
 		
 		return user != null;
 	}
