@@ -36,9 +36,18 @@ public class UserService extends BaseService{
 	
 	public UserDTO getUserById(long id) {
 		
-		User user = this.userRepository.findOne(id);
+		UserDTO userDTO = null;
 		
-		return converter.convertToUserDTO(user);
+		for(User user: userRepository.findById(id)) {
+			
+			if(id == user.getId()) {
+				userDTO = converter.convertToUserDTO(user);
+		
+				break;
+			}
+		}
+
+		return userDTO;
 	}
 	
 	public UserDTO getUserDTOByName(String name) {

@@ -27,7 +27,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.httpBasic();
 
 		http.authorizeRequests()
-			.antMatchers(HttpMethod.GET, "/productions", "/cities", "/users/marketing").permitAll()
+			.antMatchers(HttpMethod.GET, "/productions", "/cities", "/users/*").permitAll()
 			.antMatchers(HttpMethod.OPTIONS, "/token", "/productions/**", "/rights/**", "/cities/**", "/roles/**", "/users/**", "/guests/**", "/restaurants/**", "/productions/**").permitAll()
 			.anyRequest().authenticated();
 

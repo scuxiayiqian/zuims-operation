@@ -11,7 +11,10 @@ import ms.zui.operation.datamodel.domain.User;
 public interface UserRepository extends CrudRepository<User, Long>{
 
 	List<User> findByName(String name);
+	List<User> findById(Long id);
 	
 	@Query("select u from User u join u.roles r where r.name =:roleName")
 	List<User> findByRoleName(@Param("roleName") String roleName);
+	
+
 }

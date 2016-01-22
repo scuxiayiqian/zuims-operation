@@ -75,7 +75,6 @@ public class UsersController extends BaseController{
     }
 
     @RequestMapping(value="/users/{id}", method=RequestMethod.GET)
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
     public ResponseEntity<UserDTO> getUserById(@PathVariable long id) {
     	
     	HttpStatus httpStatus = HttpStatus.OK;
