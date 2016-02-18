@@ -97,9 +97,9 @@ public class UserService extends BaseService{
 		return userDTOs;
 	}
 	
-	public UserDTO createUser(UserDTO userDTO) {
+	public UserDTO createUser(User user) {
 		
-		User newUser = this.userRepository.save(converter.convertToUser(userDTO));
+		User newUser = this.userRepository.save(user);
 				
 		return converter.convertToUserDTO(newUser);
 	}

@@ -38,7 +38,7 @@ public class User {
 	
 	@NotNull
 	@Column(name="fullname")
-	private String fullname;
+	private String fullname = "";
 
 	@Column(name="mobile")
 	private String mobile;
