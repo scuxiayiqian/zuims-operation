@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import ms.zui.operation.controller.parameter.ChangePasswordParameter;
+import ms.zui.operation.datamodel.domain.User;
 import ms.zui.operation.datamodel.dto.UserDTO;
 import ms.zui.operation.service.UserService;
 
@@ -91,9 +92,9 @@ public class UsersController extends BaseController{
     @RequestMapping(value="/users/{id}", method=RequestMethod.POST, consumes="application/json")
     @ResponseStatus(HttpStatus.CREATED)
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
-    public UserDTO createUser(@PathVariable long id, @RequestBody UserDTO userDTO) {
+    public UserDTO createUser(@PathVariable long id, @RequestBody User user) {
     	
-    	UserDTO obj = userService.createUser(userDTO);
+    	UserDTO obj = userService.createUser(user);
     	   	
     	return obj;
     }
